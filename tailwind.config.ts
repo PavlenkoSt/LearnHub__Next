@@ -18,6 +18,10 @@ const config: Config = {
         primary: "var(--primary-text-color)",
         secondary: "var(--secondary-text-color)",
       },
+      borderColor: {
+        "selected-dark": "var(--selected-dark-bg)",
+        "selected-light": "var(--selected-light-bg)",
+      },
     },
   },
   plugins: [],
