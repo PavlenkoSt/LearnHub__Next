@@ -11,6 +11,12 @@ const config: Config = {
       backgroundColor: {
         primary: "var(--primary-bg)",
         secondary: "var(--secondary-bg)",
+        "selected-dark": "var(--selected-dark-bg)",
+        "selected-light": "var(--selected-light-bg)",
+      },
+      textColor: {
+        primary: "var(--primary-text-color)",
+        secondary: "var(--secondary-text-color)",
       },
     },
   },
