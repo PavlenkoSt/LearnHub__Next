@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-export default function Sidebar() {
+export default function NavBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (

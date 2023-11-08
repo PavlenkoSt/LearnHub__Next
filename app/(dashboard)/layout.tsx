@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import Sidebar from "./Sidebar";
+import NavBar from "./NavBar";
 
 interface IProps {
   children: ReactNode;
@@ -8,7 +8,7 @@ interface IProps {
 export default function Layout({ children }: IProps) {
   return (
     <div className="flex h-screen flex-row overflow-hidden">
-      <Sidebar />
+      <NavBar />
       <div className="flex-1 overflow-y-auto rounded-xl bg-secondary px-3">
         {children}
       </div>
