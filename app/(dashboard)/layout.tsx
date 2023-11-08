@@ -7,9 +7,11 @@ interface IProps {
 
 export default function Layout({ children }: IProps) {
   return (
-    <div className="flex min-h-screen flex-1 flex-row">
+    <div className="flex h-screen flex-row overflow-hidden">
       <Sidebar />
-      <div className="flex-1 rounded-xl bg-secondary px-3">{children}</div>
+      <div className="flex-1 overflow-y-auto rounded-xl bg-secondary px-3">
+        {children}
+      </div>
     </div>
   );
 }

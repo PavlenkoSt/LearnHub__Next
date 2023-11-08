@@ -9,7 +9,7 @@ export default function Sidebar() {
   return (
     <div
       className={twMerge(
-        "w-12 bg-primary px-3 py-2 transition-all",
+        "h-screen w-12 bg-primary px-3 py-2 transition-all",
         isCollapsed && "w-44",
       )}
     >
