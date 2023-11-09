@@ -1,9 +1,15 @@
+"use client";
+
 import React from "react";
-import { navigation } from "./navigation-links";
 import Link from "next/link";
 import Image from "next/image";
+import { twMerge } from "tailwind-merge";
+import { usePathname } from "next/navigation";
+import { navigation } from "./navigation-links";
 
 export default function NavBarMobile() {
+  const pathname = usePathname();
+
   return (
     <div className="relative">
       <Link
@@ -19,7 +25,10 @@ export default function NavBarMobile() {
           <Link
             key={nav.path}
             href={nav.path}
-            className="flex h-[55px] flex-1 flex-col items-center justify-center text-white"
+            className={twMerge(
+              "flex h-[55px] flex-1 flex-col items-center justify-center text-white",
+              pathname === nav.path && "bg-selected-dark",
+            )}
           >
             <nav.Icon size="25px" />
             <div className="text-xs font-bold">{nav.name}</div>
