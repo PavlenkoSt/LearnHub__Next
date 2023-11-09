@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { RxChevronRight, RxReader } from "react-icons/rx";
+import { RxChevronRight } from "react-icons/rx";
 import Image from "next/image";
 import Link from "next/link";
-import { BiBrain } from "react-icons/bi";
 import { usePathname } from "next/navigation";
+import { navigation } from "./navigation-links";
 
-export default function NavBar() {
+export default function NavBarDesktop() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const pathname = usePathname();
@@ -55,44 +55,28 @@ export default function NavBar() {
       </Link>
 
       <div className="mt-10 flex flex-col overflow-hidden">
-        <Link
-          href="/dashboard/articles"
-          className={twMerge(
-            "flex items-center gap-2 px-3 py-3 font-medium text-white hover:bg-selected-dark",
-            pathname === "/dashboard/articles" && "bg-selected-dark",
-          )}
-        >
-          <div className="h-[25px] w-[25px]">
-            <RxReader size="25px" />
-          </div>
-          <div
+        {navigation.map((nav) => (
+          <Link
+            key={nav.path}
+            href={nav.path}
             className={twMerge(
-              "opacity-0 transition-all",
-              isCollapsed && "opacity-100",
+              "flex items-center gap-2 px-3 py-3 font-medium text-white hover:bg-selected-dark",
+              pathname === nav.path && "bg-selected-dark",
             )}
           >
-            Articles
-          </div>
-        </Link>
-        <Link
-          href="/dashboard/courses"
-          className={twMerge(
-            "flex items-center gap-2 px-3 py-3 font-medium text-white hover:bg-selected-dark",
-            pathname === "/dashboard/courses" && "bg-selected-dark",
-          )}
-        >
-          <div className="h-[25px] w-[25px]">
-            <BiBrain size="25px" />
-          </div>
-          <div
-            className={twMerge(
-              "opacity-0 transition-all",
-              isCollapsed && "opacity-100",
-            )}
-          >
-            Courses
-          </div>
-        </Link>
+            <div className="h-[25px] w-[25px]">
+              <nav.Icon size="25px" />
+            </div>
+            <div
+              className={twMerge(
+                "opacity-0 transition-all",
+                isCollapsed && "opacity-100",
+              )}
+            >
+              {nav.name}
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );
