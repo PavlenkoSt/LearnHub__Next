@@ -1,47 +1,70 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
+import Btn from "@/app/_components/UI/Btn";
+import Input from "@/app/_components/UI/Input";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
 
-  return (
-    <form
-      onSubmit={async (e) => {
-        try {
-          setLoading(true);
-          e.preventDefault();
-          const result = await signIn("login", {
-            email,
-            password,
-            redirect: false,
-            callbackUrl: "",
-          });
+  const router = useRouter();
 
-          console.log("result", result);
-        } finally {
-          setLoading(false);
-        }
-      }}
-    >
-      <input
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    try {
+      setLoading(true);
+      e.preventDefault();
+      const result = await signIn("login", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: "",
+      });
+
+      router.replace("/dashboard");
+
+      console.log("result", result);
+    } catch (e) {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={onSubmit} className="flex w-full flex-col gap-5">
+      <Input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         name="email"
+        placeholder="Write email..."
+        label="Email"
+        required
       />
-      <input
+      <Input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         name="password"
         minLength={6}
+        placeholder="Write a password..."
+        label="Password"
+        required
       />
-      <input type="submit" value="Sign In" />
+      <div className="flex items-center justify-between">
+        <Btn type="submit" loading={loading}>
+          Sign In
+        </Btn>
+        <Link
+          href="/sign-up"
+          className="text-sm font-medium text-active transition-all hover:text-sky-700"
+        >
+          You do not have an account?
+        </Link>
+      </div>
     </form>
   );
 }

@@ -23,6 +23,10 @@ const config: Config = {
         "selected-dark": "var(--selected-dark-bg)",
         "selected-light": "var(--selected-light-bg)",
       },
+      outlineColor: {
+        "selected-dark": "var(--selected-dark-bg)",
+        "selected-light": "var(--selected-light-bg)",
+      },
     },
   },
   plugins: [],
