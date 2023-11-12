@@ -16,10 +16,10 @@ export default function Dashboard() {
         </div>
         <div className="text-primary md:flex-1 md:py-4">
           <div className="md:max-w-[500px]">
-            <h1 className="mb-5 text-3xl font-medium">
+            <h1 className="mb-5 text-center text-2xl font-medium sm:text-3xl md:text-left">
               Welcome to <span className="font-bold text-active">LearnHub</span>
             </h1>
-            <h2 className="text-lg">
+            <h2 className="text-center text-lg sm:px-8 md:px-0 md:text-left">
               Your personalized dashboard awaits, filled with courses,
               resources, and tools to help you reach your full potential. Let's
               make every click count. Happy learning! 📚🚀
