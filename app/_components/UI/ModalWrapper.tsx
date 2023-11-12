@@ -19,7 +19,7 @@ export default function ModalWrapper({
   return (
     <CSSTransition
       in={visible}
-      timeout={600}
+      timeout={500}
       classNames="modal"
       unmountOnExit
       nodeRef={nodeRef}

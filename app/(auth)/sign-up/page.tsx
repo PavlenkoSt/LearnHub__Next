@@ -3,7 +3,7 @@
 import React, { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
 
@@ -12,20 +12,21 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isPasswordsNotMatch, setIsPasswordsNotMatch] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    if (loading) return;
+
     e.preventDefault();
     try {
       setLoading(true);
+      setErrorMessage("");
 
       if (password !== repeatedPassword) {
-        setIsPasswordsNotMatch(true);
         throw new Error("Passwords not match");
-      } else {
-        setIsPasswordsNotMatch(false);
       }
 
       const response = await fetch("/api/user", {
@@ -55,10 +56,11 @@ export default function SignUp() {
       if (!signInResult?.ok)
         throw new Error(signInResult?.error || "Something went wrong");
 
-      router.replace("/dashboard");
-    } catch (e) {
+      router.replace(searchParams.get("callbackUrl") || "/dashboard");
+    } catch (e: any) {
       console.log("e", e);
       setLoading(false);
+      setErrorMessage(e?.message || "Something went wrong");
     }
   };
 
@@ -71,6 +73,7 @@ export default function SignUp() {
         name="email"
         placeholder="Write email..."
         label="Email"
+        autoComplete="email"
         required
       />
       <Input
@@ -82,6 +85,7 @@ export default function SignUp() {
         placeholder="Write a password..."
         label="Password"
         required
+        autoComplete="new-password"
       />
       <Input
         type="password"
@@ -91,10 +95,11 @@ export default function SignUp() {
         minLength={6}
         placeholder="Write a password one more time..."
         label="Repeat password"
+        autoComplete="repeat-password"
         required
       />
-      {isPasswordsNotMatch && (
-        <div className="text-sm text-red-600">Passwords not match</div>
+      {errorMessage && (
+        <div className="text-sm text-red-600">{errorMessage}</div>
       )}
       <div className="flex items-center justify-between">
         <Btn type="submit" loading={loading}>
