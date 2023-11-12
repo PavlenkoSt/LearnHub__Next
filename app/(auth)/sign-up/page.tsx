@@ -45,21 +45,19 @@ export default function SignUp() {
         throw new Error(result?.message);
       }
 
-      console.log("result", result);
+      const signInResult = await signIn("login", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: "",
+      });
 
-      // const result = await signIn("login", {
-      //   email,
-      //   password,
-      //   redirect: false,
-      //   callbackUrl: "",
-      // });
+      if (!signInResult?.ok)
+        throw new Error(signInResult?.error || "Something went wrong");
 
-      // router.replace("/dashboard");
-
-      // console.log("result", result);
+      router.replace("/dashboard");
     } catch (e) {
       console.log("e", e);
-
       setLoading(false);
     }
   };

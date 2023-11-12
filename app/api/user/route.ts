@@ -2,21 +2,6 @@ import bcrypt from "bcryptjs";
 import prisma from "@/prisma";
 import { emailRegExp } from "@/app/_utilts/regexps";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const email = searchParams.get("email");
-
-  if (!email)
-    return Response.json({ message: "No email provided" }, { status: 400 });
-
-  const user = await prisma.user.findFirst({ where: { email } });
-
-  if (!user)
-    return Response.json({ message: "User not found" }, { status: 404 });
-
-  return Response.json({ user }, { status: 200 });
-}
-
 export async function POST(request: Request) {
   const { email, password } = await request.json();
 

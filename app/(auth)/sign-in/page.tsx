@@ -15,9 +15,9 @@ export default function SignIn() {
   const router = useRouter();
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       setLoading(true);
-      e.preventDefault();
       const result = await signIn("login", {
         email,
         password,
@@ -25,10 +25,7 @@ export default function SignIn() {
         callbackUrl: "",
       });
 
-      console.log("result", result);
-
-      if (!result || !result.ok)
-        throw new Error(result?.error || "Something went wrong");
+      if (!result?.ok) throw new Error(result?.error || "Something went wrong");
 
       router.replace("/dashboard");
     } catch (e) {

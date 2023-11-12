@@ -17,7 +17,7 @@ export default function Dashboard() {
         <div className="text-primary md:flex-1 md:py-4">
           <div className="md:max-w-[500px]">
             <h1 className="mb-5 text-3xl font-medium">
-              Welcome to <span className="text-active font-bold">LearnHub</span>
+              Welcome to <span className="font-bold text-active">LearnHub</span>
             </h1>
             <h2 className="text-lg">
               Your personalized dashboard awaits, filled with courses,
