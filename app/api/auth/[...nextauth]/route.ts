@@ -1,8 +1,10 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import bcrypt from "bcryptjs";
+import NextAuth, { NextAuthOptions, User } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
+import prisma from "@/prisma";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -20,8 +22,30 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials, req) {
-        console.log("authorize credentials", credentials);
-        return null;
+        try {
+          if (!credentials?.email || !credentials?.password) return null;
+
+          const user = await prisma.user.findFirst({
+            where: {
+              email: credentials.email,
+            },
+          });
+
+          if (!user) return null;
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.passwordHash,
+          );
+
+          if (!isPasswordValid) return null;
+
+          const { passwordHash: _, ...rest } = user;
+          return rest as unknown as User;
+        } catch (e) {
+          console.log("authorize error", e);
+          return null;
+        }
       },
     }),
   ],

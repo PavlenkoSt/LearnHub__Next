@@ -1,5 +1,4 @@
 import bcrypt from "bcryptjs";
-import { NextApiRequest } from "next";
 import prisma from "@/prisma";
 import { emailRegExp } from "@/app/_utilts/regexps";
 
@@ -34,9 +33,19 @@ export async function POST(request: Request) {
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  const user = await prisma.user.create({
-    data: { email, passwordHash, firstName: "", lastName: "" },
-  });
+  try {
+    const user = await prisma.user.create({
+      data: { email, passwordHash, firstName: "", lastName: "" },
+    });
 
-  return Response.json({ user }, { status: 201 });
+    return Response.json({ user }, { status: 201 });
+  } catch (e: any) {
+    if (e.code === "P2002") {
+      return Response.json(
+        { message: "Email already exist in system" },
+        { status: 400 },
+      );
+    }
+    return Response.json({ message: "Something went wrong" }, { status: 500 });
+  }
 }

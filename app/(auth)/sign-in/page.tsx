@@ -25,9 +25,12 @@ export default function SignIn() {
         callbackUrl: "",
       });
 
-      router.replace("/dashboard");
-
       console.log("result", result);
+
+      if (!result || !result.ok)
+        throw new Error(result?.error || "Something went wrong");
+
+      router.replace("/dashboard");
     } catch (e) {
       setLoading(false);
     }

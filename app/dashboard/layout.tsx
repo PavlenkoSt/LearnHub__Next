@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import NavBarDesktop from "./NavBarDesktop";
 import NavBarMobile from "./NavBarMobile";
 import HeaderSearch from "./HeaderSearch";
+import HeaderSignOut from "./HeaderSignOut";
 
 interface IProps {
   children: ReactNode;
@@ -14,8 +15,9 @@ export default function Layout({ children }: IProps) {
         <NavBarDesktop />
       </div>
       <div className="flex-1 overflow-y-auto bg-secondary pb-4 md:pb-0">
-        <div className="flex h-[50px] items-center justify-end bg-gray-200 px-5 md:h-[60px]">
+        <div className="flex h-[50px] items-center justify-end gap-2 bg-gray-200 px-5 md:h-[60px]">
           <HeaderSearch />
+          <HeaderSignOut />
         </div>
         <div className="px-3">{children}</div>
       </div>
