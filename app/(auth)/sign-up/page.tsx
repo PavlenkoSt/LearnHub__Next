@@ -3,9 +3,9 @@
 import React, { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
-import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -17,9 +17,9 @@ export default function SignUp() {
   const router = useRouter();
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       setLoading(true);
-      e.preventDefault();
 
       if (password !== repeatedPassword) {
         setIsPasswordsNotMatch(true);
@@ -28,19 +28,38 @@ export default function SignUp() {
         setIsPasswordsNotMatch(false);
       }
 
-      // db logic
-
-      const result = await signIn("login", {
-        email,
-        password,
-        redirect: false,
-        callbackUrl: "",
+      const response = await fetch("/api/user", {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
-      router.replace("/dashboard");
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result?.message);
+      }
 
       console.log("result", result);
+
+      // const result = await signIn("login", {
+      //   email,
+      //   password,
+      //   redirect: false,
+      //   callbackUrl: "",
+      // });
+
+      // router.replace("/dashboard");
+
+      // console.log("result", result);
     } catch (e) {
+      console.log("e", e);
+
       setLoading(false);
     }
   };
