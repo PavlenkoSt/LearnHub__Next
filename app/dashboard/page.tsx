@@ -21,8 +21,8 @@ export default function Dashboard() {
             </h1>
             <h2 className="text-center text-lg sm:px-8 md:px-0 md:text-left">
               Your personalized dashboard awaits, filled with courses,
-              resources, and tools to help you reach your full potential. Let's
-              make every click count. Happy learning! 📚🚀
+              resources, and tools to help you reach your full potential.
+              Let&apos;s make every click count. Happy learning! 📚🚀
             </h2>
           </div>
         </div>

@@ -44,7 +44,7 @@ export default function SignIn() {
     if (session.status === "authenticated") {
       router.replace("/dashboard");
     }
-  }, [session.status]);
+  }, [session.status, router]);
 
   return (
     <form onSubmit={onSubmit} className="flex w-full flex-col gap-5">
