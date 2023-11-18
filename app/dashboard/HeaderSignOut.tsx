@@ -27,10 +27,7 @@ export default function HeaderSignOut() {
 
   return (
     <>
-      <button
-        onClick={() => setVisible(true)}
-        className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-secondary transition-all hover:bg-white"
-      >
+      <button onClick={() => setVisible(true)} className="header-btn">
         <PiSignOut size={20} />
       </button>
       <ModalWrapper visible={visible} setVisible={setVisible}>

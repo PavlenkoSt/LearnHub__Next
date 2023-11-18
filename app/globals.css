@@ -15,6 +15,10 @@ body {
   @apply min-h-screen;
 }
 
+.header-btn {
+  @apply flex h-[35px] w-[35px] items-center justify-center rounded-full bg-secondary transition-all hover:bg-white;
+}
+
 /* modal animation */
 .modal-enter {
   opacity: 0;
