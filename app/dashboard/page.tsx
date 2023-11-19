@@ -1,9 +1,10 @@
 import Image from "next/image";
 import React from "react";
+import PageContainer from "../_components/PageContainer";
 
 export default function Dashboard() {
   return (
-    <div className="m-auto max-w-[1200px]">
+    <PageContainer>
       <div className="md:flex md:items-center md:gap-3">
         <div className="md:flex-1">
           <Image
@@ -27,6 +28,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

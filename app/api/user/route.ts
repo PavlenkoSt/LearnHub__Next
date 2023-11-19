@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
   try {
     const user = await prisma.user.create({
-      data: { email, passwordHash, firstName: "", lastName: "" },
+      data: { email, passwordHash, firstName: "", lastName: "", image: "" },
     });
 
     return Response.json({ user }, { status: 201 });
@@ -31,6 +31,8 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
+    console.log("e", e);
+
     return Response.json({ message: "Something went wrong" }, { status: 500 });
   }
 }

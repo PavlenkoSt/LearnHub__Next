@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { withUt } from "uploadthing/tw";
 
 const config: Config = {
   content: [
@@ -20,6 +21,7 @@ const config: Config = {
         active: "var(--primary-bg)",
       },
       borderColor: {
+        primary: "var(--primary-bg)",
         "selected-dark": "var(--selected-dark-bg)",
         "selected-light": "var(--selected-light-bg)",
       },
@@ -31,4 +33,4 @@ const config: Config = {
   },
   plugins: [],
 };
-export default config;
+export default withUt(config);

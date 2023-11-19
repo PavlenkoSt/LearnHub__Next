@@ -49,6 +49,23 @@ const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        token.user = session.user;
+      } else if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      if (token) {
+        //@ts-ignore
+        session.user = token.user;
+      }
+      return session;
+    },
+  },
   pages: {
     signIn: "/sign-in",
   },
