@@ -4,12 +4,12 @@ import React, { ButtonHTMLAttributes, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import Loader from "./Loader";
 
-interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   loading?: boolean;
 }
 
-export default function Btn(props: IProps) {
+export default function Btn(props: IBtnProps) {
   const { children, loading, onClick, className, ...rest } = props;
 
   return (
