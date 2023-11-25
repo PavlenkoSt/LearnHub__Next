@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import React, { ChangeEventHandler, ReactNode, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { PiUploadSimpleBold } from "react-icons/pi";
 import ModalWrapper from "@/app/_components/UI/ModalWrapper";
 import { twMerge } from "tailwind-merge";
@@ -16,6 +17,7 @@ interface IProps {
 
 export default function ProfileAvatar({ children }: IProps) {
   const session = useSession();
+  const router = useRouter();
 
   const [uploadedImg, setUploadedImg] = useState<File | null>(null);
   const [visible, setVisible] = useState(false);
@@ -54,14 +56,46 @@ export default function ProfileAvatar({ children }: IProps) {
     setVisible(true);
   };
 
-  const onSave = () => {
+  const onSave = async () => {
+    if (!session.data) {
+      return toast.error("No session is found");
+    }
+
+    if (!uploadedImg) {
+      return toast.error("Please select image");
+    }
+
     try {
+      setUploading(true);
+
+      const formData = new FormData();
+      formData.append("image", uploadedImg);
+
+      const response = await fetch(`/api/user/${session.data.user.id}/avatar`, {
+        method: "PATCH",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.status >= 400 || !data) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
       setVisible(false);
       setUploadedImg(null);
+      session.update({
+        ...session,
+        user: data.user,
+      });
+      toast.success("Avatar has been changed successfully");
+      router.refresh();
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
       setUploading(false);
       setUploadingProgress(0);
-      toast.success("Avatar has been changed successfully");
-    } catch (e) {}
+    }
   };
 
   return (
@@ -96,7 +130,9 @@ export default function ProfileAvatar({ children }: IProps) {
                 />
               </div>
               <div className="flex w-full flex-1 items-center justify-center gap-12">
-                <Btn onClick={onSave}>Save</Btn>
+                <Btn loading={uploading} onClick={onSave}>
+                  Save
+                </Btn>
                 <BtnDanger onClick={() => setUploadedImg(null)}>
                   Cancel
                 </BtnDanger>

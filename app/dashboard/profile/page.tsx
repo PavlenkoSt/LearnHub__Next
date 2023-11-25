@@ -4,12 +4,12 @@ import Image from "next/image";
 import { getServerSession } from "next-auth";
 import ProfileAvatar from "./ProfileAvatar";
 import PageContainer from "@/app/_components/PageContainer";
+import { authOptions } from "@/next-auth.options";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 export default async function Profile() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   return (
     <PageContainer>
@@ -17,7 +17,11 @@ export default async function Profile() {
         <ProfileAvatar>
           <div className="relative flex h-[150px] w-[150px] items-center justify-center rounded-full border-4 border-[#f6f6f6] bg-white">
             <Image
-              src={session?.user?.image || "/Avatar.svg"}
+              src={
+                !!session?.user?.image
+                  ? "/tmp/" + session.user.image
+                  : "/Avatar.svg"
+              }
               width={140}
               height={140}
               className="rounded-full"
