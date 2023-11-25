@@ -1,13 +1,13 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import React, { ChangeEventHandler, ReactNode, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { PiUploadSimpleBold } from "react-icons/pi";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { PiUploadSimpleBold } from "react-icons/pi";
-import ModalWrapper from "@/app/_components/UI/ModalWrapper";
 import { twMerge } from "tailwind-merge";
+import ModalWrapper from "@/app/_components/UI/ModalWrapper";
 import Btn from "@/app/_components/UI/Btn";
 import BtnDanger from "@/app/_components/UI/BtnDanger";
 
@@ -22,7 +22,6 @@ export default function ProfileAvatar({ children }: IProps) {
   const [uploadedImg, setUploadedImg] = useState<File | null>(null);
   const [visible, setVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [uloadingProgress, setUploadingProgress] = useState(0);
 
   const imgPreview = useMemo(() => {
     if (!uploadedImg) return "";
@@ -84,17 +83,18 @@ export default function ProfileAvatar({ children }: IProps) {
 
       setVisible(false);
       setUploadedImg(null);
-      session.update({
+
+      await session.update({
         ...session,
         user: data.user,
       });
-      toast.success("Avatar has been changed successfully");
+
       router.refresh();
+      toast.success("Avatar has been changed successfully");
     } catch (e: any) {
       toast.error(e.message);
     } finally {
       setUploading(false);
-      setUploadingProgress(0);
     }
   };
 
