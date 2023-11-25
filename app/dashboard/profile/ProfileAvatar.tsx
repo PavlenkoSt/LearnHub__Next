@@ -1,6 +1,12 @@
 "use client";
 
-import React, { ChangeEventHandler, ReactNode, useMemo, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { PiUploadSimpleBold } from "react-icons/pi";
 import { useSession } from "next-auth/react";
@@ -97,6 +103,13 @@ export default function ProfileAvatar({ children }: IProps) {
       setUploading(false);
     }
   };
+
+  useEffect(() => {
+    if (!visible) {
+      setUploadedImg(null);
+      setUploading(false);
+    }
+  }, [visible]);
 
   return (
     <div>
