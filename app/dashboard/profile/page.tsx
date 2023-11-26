@@ -19,9 +19,9 @@ export default async function Profile() {
   return (
     <PageContainer>
       <div>
-        <div className="-mt-5 flex items-center justify-center">
+        <div className="  flex items-center justify-center md:-mt-5">
           <ProfileAvatar>
-            <div className="relative flex h-[150px] w-[150px] items-center justify-center rounded-full border-4 border-[#f6f6f6] bg-white">
+            <div className="relative mb-1 flex h-[150px] w-[150px] items-center justify-center rounded-full border-4 border-[#f6f6f6] bg-white">
               <Image
                 src={
                   !!session?.user?.image
@@ -52,9 +52,11 @@ export default async function Profile() {
               {user.firstName} {user.lastName}
             </div>
           )}
-          <div className="mt-2 flex gap-6">
-            <div className="flex-1">
-              <h2 className="mb-2 text-xl font-medium">Personal Information</h2>
+          <div className="mt-2 flex items-center justify-center">
+            <div className="w-full max-w-[600px]">
+              <h2 className="mb-3 text-center text-xl font-medium">
+                Personal Information
+              </h2>
               <div className="rounded-sm border-[1px] border-primary">
                 <ProfileField
                   label="First name"
@@ -80,9 +82,6 @@ export default async function Profile() {
                   isLast
                 />
               </div>
-            </div>
-            <div className="flex-1">
-              <h2 className="mb-2 text-xl font-medium">System settings</h2>
             </div>
           </div>
         </div>

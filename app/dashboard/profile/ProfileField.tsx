@@ -91,14 +91,16 @@ export default function ProfileField({
   return (
     <form
       className={twMerge(
-        "flex h-[80px] items-center gap-1 border-b-[1px] border-primary bg-white px-6",
+        "flex flex-col items-center gap-1 border-b-[1px] border-primary bg-white px-2 md:h-[80px] md:flex-row md:px-6",
         isLast && "border-0",
       )}
       onSubmit={onSubmit}
     >
-      <div className="text-md flex-1 font-medium">{label}</div>
+      <div className="text-md flex-1 text-center font-medium md:text-start">
+        {label}
+      </div>
       {isFormActive ? (
-        <div className="flex items-center gap-1">
+        <div className="md:md-0 mb-2 flex items-center gap-1">
           <Input
             name={fieldName}
             defaultValue={fieldValue}
@@ -110,7 +112,7 @@ export default function ProfileField({
           <input ref={submitBtnRef} type="submit" hidden />
           <div
             onClick={() => submitBtnRef.current?.click()}
-            className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-md border-4 border-primary text-primary transition-all hover:border-green-600 hover:text-green-600"
+            className="flex h-[40px] w-[40px] min-w-[40px] cursor-pointer items-center justify-center rounded-md border-4 border-primary text-primary transition-all md:hover:border-green-600 md:hover:text-green-600"
           >
             {loading ? (
               <Loader className="border-primary" />
@@ -123,12 +125,12 @@ export default function ProfileField({
         <div
           onClick={onActivateForm}
           className={twMerge(
-            "group flex flex-1 cursor-pointer items-center justify-between hover:underline",
+            "group flex flex-1 cursor-pointer items-center justify-between gap-2 hover:underline",
             !fieldValue && "text-blue-600",
           )}
         >
           {fieldValue || setFieldLabel}
-          <div className="text-selected-dark flex h-[40px] w-[40px] items-center justify-center rounded-md border-4 border-selected-dark p-2 opacity-0 transition-all group-hover:opacity-100">
+          <div className="mb-2 flex h-[40px] w-[40px] items-center justify-center rounded-md border-4 border-selected-dark p-2 text-selected-dark opacity-100 transition-all group-hover:opacity-100 md:mb-0 md:opacity-0">
             <MdEdit size={15} />
           </div>
         </div>
