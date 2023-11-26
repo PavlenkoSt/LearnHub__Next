@@ -179,7 +179,6 @@ export default function ProfileAvatar({ children }: IProps) {
         </div>
         <Toaster />
       </ModalWrapper>
-      <Toaster />
     </div>
   );
 }

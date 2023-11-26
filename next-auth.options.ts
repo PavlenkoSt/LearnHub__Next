@@ -58,7 +58,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    session({ session, token, trigger }) {
+    session({ session, token }) {
       if (token) {
         //@ts-ignore
         session.user = token.user;

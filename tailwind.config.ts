@@ -18,6 +18,7 @@ const config: Config = {
         primary: "var(--primary-text-color)",
         secondary: "var(--secondary-text-color)",
         active: "var(--primary-bg)",
+        "selected-dark": "var(--selected-dark-bg)",
       },
       borderColor: {
         primary: "var(--primary-bg)",
