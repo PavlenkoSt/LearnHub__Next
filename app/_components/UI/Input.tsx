@@ -11,7 +11,7 @@ export default function Input(props: IProps) {
   const { className, label, ...rest } = props;
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex w-full flex-col gap-1">
       {!!label && <div className="">{label}</div>}
       <input
         className={twMerge(
