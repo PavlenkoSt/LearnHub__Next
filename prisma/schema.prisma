@@ -12,10 +12,20 @@ datasource db {
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  email        String  @unique
-  passwordHash String
-  firstName    String?
-  lastName     String?
-  image        String?
+  id                  Int      @id @default(autoincrement())
+  email               String   @unique
+  passwordHash        String
+  firstName           String?
+  lastName            String?
+  image               String?
+  coursesWhereTeacher Course[] @relation(name: "UserCoursesWhereTeacher")
+  coursesWhereStudent Course[] @relation(name: "UserCoursesWhereStudent")
+}
+
+model Course {
+  id           Int    @id @default(autoincrement())
+  name         String
+  teacherId    Int
+  teacher      User   @relation(name: "UserCoursesWhereTeacher", fields: [teacherId], references: [id])
+  participants User[] @relation(name: "UserCoursesWhereStudent")
 }
