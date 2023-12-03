@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import ProfileAvatar from "./ProfileAvatar";
 import ProfileField from "./ProfileField";
 import { ActiveFormEnum } from "./types";
+import Avatar from "@/app/_components/UI/Avatar";
 
 export const dynamic = "force-dynamic";
 
@@ -21,29 +22,14 @@ export default async function Profile() {
       <div>
         <div className="  flex items-center justify-center md:-mt-5">
           <ProfileAvatar>
-            <div className="relative mb-1 flex h-[150px] w-[150px] items-center justify-center rounded-full border-4 border-[#f6f6f6] bg-white">
-              <Image
-                src={
-                  !!session?.user?.image
-                    ? "/tmp/" + session.user.image
-                    : "/Avatar.svg"
-                }
-                width={140}
-                height={140}
-                className="rounded-full"
-                alt="Avatar"
-                style={{
-                  objectFit: "cover",
-                  minWidth: "100%",
-                  minHeight: "100%",
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-              <div className="absolute right-3 top-0 rounded-full border-2 border-white bg-primary p-2 text-white">
-                <MdOutlineModeEdit size={20} />
-              </div>
-            </div>
+            <Avatar
+              src={
+                !!session?.user?.image
+                  ? "/tmp/" + session.user.image
+                  : "/Avatar.svg"
+              }
+              size={140}
+            />
           </ProfileAvatar>
         </div>
         <div className="text-primary">
