@@ -112,7 +112,10 @@ export default function ProfileField({
           <input ref={submitBtnRef} type="submit" hidden />
           <div
             onClick={() => submitBtnRef.current?.click()}
-            className="flex h-[40px] w-[40px] min-w-[40px] cursor-pointer items-center justify-center rounded-md border-4 border-primary text-primary transition-all md:hover:border-green-600 md:hover:text-green-600"
+            className={twMerge(
+              "flex h-[40px] w-[40px] min-w-[40px] cursor-pointer items-center justify-center rounded-md border-4 border-primary text-primary transition-all md:hover:border-green-600 md:hover:text-green-600",
+              loading && "hover:border-blue-600 md:hover:border-blue-600",
+            )}
           >
             {loading ? (
               <Loader className="border-primary" />
