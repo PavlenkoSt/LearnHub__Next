@@ -1,4 +1,4 @@
-import { BiBrain } from "react-icons/bi";
+import { FiUser } from "react-icons/fi";
 import { RxReader } from "react-icons/rx";
 
 export const navigation = [
@@ -8,8 +8,8 @@ export const navigation = [
     Icon: RxReader,
   },
   {
-    name: "Courses",
-    path: "/dashboard/courses",
-    Icon: BiBrain,
+    name: "Profile",
+    path: "/dashboard/profile",
+    Icon: FiUser,
   },
 ];

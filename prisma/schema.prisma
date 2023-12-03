@@ -12,20 +12,42 @@ datasource db {
 }
 
 model User {
-  id                  Int      @id @default(autoincrement())
-  email               String   @unique
-  passwordHash        String
-  firstName           String?
-  lastName            String?
-  image               String?
-  coursesWhereTeacher Course[] @relation(name: "UserCoursesWhereTeacher")
-  coursesWhereStudent Course[] @relation(name: "UserCoursesWhereStudent")
+  id             Int              @id @default(autoincrement())
+  email          String           @unique
+  passwordHash   String
+  firstName      String?
+  lastName       String?
+  image          String?
+  articles       Article[]
+  ArticleComment ArticleComment[]
 }
 
-model Course {
-  id           Int    @id @default(autoincrement())
-  name         String
-  teacherId    Int
-  teacher      User   @relation(name: "UserCoursesWhereTeacher", fields: [teacherId], references: [id])
-  participants User[] @relation(name: "UserCoursesWhereStudent")
+model Article {
+  id          Int             @id @default(autoincrement())
+  name        String
+  description String
+  body        String
+  owner       User            @relation(fields: [userId], references: [id])
+  userId      Int
+  rating      Float
+  category    ArticleCategory @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model ArticleCategory {
+  id       Int       @id @default(autoincrement())
+  name     String
+  articles Article[]
+}
+
+model ArticleComment {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
+  body        String
+  userId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  repliedToId Int
 }
