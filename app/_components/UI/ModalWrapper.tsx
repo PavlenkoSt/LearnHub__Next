@@ -29,7 +29,7 @@ export default function ModalWrapper({
         onClick={() => setVisible(false)}
         ref={nodeRef}
       >
-        <div className="flex h-full w-full items-center justify-center overflow-y-scroll">
+        <div className="flex h-full w-full items-start justify-center overflow-y-scroll">
           <div
             className="modal-window relative mt-20 w-[100%] max-w-[480px] overflow-hidden rounded-lg border-transparent bg-white outline-white"
             onClick={(e) => {

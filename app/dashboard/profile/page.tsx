@@ -1,13 +1,11 @@
 import React from "react";
-import { MdOutlineModeEdit } from "react-icons/md";
-import Image from "next/image";
 import { getServerSession } from "next-auth";
-import PageContainer from "@/app/_components/PageContainer";
-import { authOptions } from "@/next-auth.options";
 import { Toaster } from "react-hot-toast";
+import { authOptions } from "@/next-auth.options";
 import ProfileAvatar from "./ProfileAvatar";
 import ProfileField from "./ProfileField";
 import { ActiveFormEnum } from "./types";
+import PageContainer from "@/app/_components/PageContainer";
 import Avatar from "@/app/_components/UI/Avatar";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +27,7 @@ export default async function Profile() {
                   : "/Avatar.svg"
               }
               size={140}
+              rounded
             />
           </ProfileAvatar>
         </div>

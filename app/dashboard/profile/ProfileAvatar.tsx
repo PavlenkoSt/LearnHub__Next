@@ -62,7 +62,7 @@ export default function ProfileAvatar({ children }: IProps) {
   };
 
   return (
-    <ImagePicker state={state} onSave={onSave}>
+    <ImagePicker state={state} onSave={onSave} roundedPreview>
       {children}
     </ImagePicker>
   );

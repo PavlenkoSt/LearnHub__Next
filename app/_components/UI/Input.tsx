@@ -15,7 +15,7 @@ export default function Input(props: IProps) {
       {!!label && <div className="">{label}</div>}
       <input
         className={twMerge(
-          "w-full max-w-[500px] rounded-md border-[1px] border-selected-dark px-4 py-2 outline-selected-dark transition-all",
+          "w-full rounded-md border-[1px] border-selected-dark px-4 py-2 outline-selected-dark transition-all",
           className,
         )}
         {...rest}

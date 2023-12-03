@@ -14,11 +14,13 @@ import Image from "next/image";
 import ModalWrapper from "./ModalWrapper";
 import BtnDanger from "./BtnDanger";
 import Btn from "./Btn";
+import { useImagePreview } from "@/app/_hooks/useImagePreview";
 
 interface IProps {
   children: ReactNode;
   onSave: () => void;
   state: IHookState;
+  roundedPreview?: boolean;
 }
 
 interface IHookState {
@@ -47,7 +49,12 @@ export const useImagePickerState = () => {
   return state;
 };
 
-export default function ImagePicker({ children, onSave, state }: IProps) {
+export default function ImagePicker({
+  children,
+  onSave,
+  state,
+  roundedPreview,
+}: IProps) {
   const {
     uploadedImg,
     setUploadedImg,
@@ -57,10 +64,7 @@ export default function ImagePicker({ children, onSave, state }: IProps) {
     setUploading,
   } = state;
 
-  const imgPreview = useMemo(() => {
-    if (!uploadedImg) return "";
-    return URL.createObjectURL(uploadedImg);
-  }, [uploadedImg]);
+  const imgPreview = useImagePreview(uploadedImg);
 
   const onSelectFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0];
@@ -96,6 +100,8 @@ export default function ImagePicker({ children, onSave, state }: IProps) {
     }
   }, [visible]);
 
+  const roundedStyle = roundedPreview ? "rounded-full" : "rounded-sm";
+
   return (
     <div>
       <button onClick={onOpenModal}>{children}</button>
@@ -111,12 +117,17 @@ export default function ImagePicker({ children, onSave, state }: IProps) {
               <div className="text-center text-xl font-bold text-primary">
                 Preview:
               </div>
-              <div className="h-[200px] w-[200px] rounded-full border-4 border-[#f6f6f6]">
+              <div
+                className={twMerge(
+                  "h-[200px] w-[200px] border-4 border-[#f6f6f6]",
+                  roundedStyle,
+                )}
+              >
                 <Image
                   src={imgPreview}
                   width={200}
                   height={200}
-                  className="rounded-full"
+                  className={roundedStyle}
                   alt="Uploaded image"
                   style={{
                     objectFit: "cover",
