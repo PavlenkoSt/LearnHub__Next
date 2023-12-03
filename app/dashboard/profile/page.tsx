@@ -52,7 +52,7 @@ export default async function Profile() {
               {user.firstName} {user.lastName}
             </div>
           )}
-          <div className="mt-2 flex items-center justify-center">
+          <div className="my-2 flex items-center justify-center">
             <div className="w-full max-w-[600px]">
               <h2 className="mb-3 text-center text-xl font-medium">
                 Personal Information
