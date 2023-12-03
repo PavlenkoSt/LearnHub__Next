@@ -25,17 +25,19 @@ export default function ModalWrapper({
       nodeRef={nodeRef}
     >
       <div
-        className="modal-container absolute bottom-0 left-0 right-0 top-0 z-50 flex items-start justify-center bg-[#07165871] backdrop-blur-sm transition-all "
+        className="modal-container absolute bottom-0 left-0 right-0 top-0 z-50 flex items-start justify-center overflow-hidden bg-[#07165871] backdrop-blur-sm transition-all "
         onClick={() => setVisible(false)}
         ref={nodeRef}
       >
-        <div
-          className="modal-window relative mt-20 w-[100%] max-w-[480px] overflow-hidden rounded-lg border-transparent bg-white outline-white"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          {children}
+        <div className="flex h-full w-full items-center justify-center overflow-y-scroll">
+          <div
+            className="modal-window relative mt-20 w-[100%] max-w-[480px] overflow-hidden rounded-lg border-transparent bg-white outline-white"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            {children}
+          </div>
         </div>
       </div>
     </CSSTransition>
