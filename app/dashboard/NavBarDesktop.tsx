@@ -61,7 +61,7 @@ export default function NavBarDesktop() {
             href={nav.path}
             className={twMerge(
               "flex items-center gap-2 px-3 py-3 font-medium text-white hover:bg-selected-dark",
-              pathname === nav.path && "bg-selected-dark",
+              pathname.includes(nav.path) && "bg-selected-dark",
             )}
           >
             <div className="h-[25px] w-[25px]">
