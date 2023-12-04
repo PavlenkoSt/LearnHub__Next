@@ -1,6 +1,7 @@
 "use client";
 
 import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
 import TextArea from "@/app/_components/UI/TextArea";
@@ -15,15 +16,35 @@ const DESCRIPTION_MAX_LEN = 250;
 export default function Form() {
   const [descriptionLength, setDescriptionLength] = useState(0);
   const [picture, setPicture] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const imagePickerState = useImagePickerState();
   const imgPreview = useImagePreview(picture);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("====================================");
-    console.log("cak");
-    console.log("====================================");
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+
+      setLoading(true);
+
+      const formData = new FormData(e.currentTarget);
+
+      if (picture) formData.append("picture", picture);
+
+      const response = await fetch("/api/articles/create", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      router.push("/dashboard/articles/" + result.article.id);
+    } catch (e) {
+      console.log("e", e);
+      setLoading(false);
+    }
   };
 
   const onPickImage = () => {
@@ -71,6 +92,7 @@ export default function Form() {
           <Btn
             type="submit"
             className="flex w-full items-center justify-center text-center"
+            loading={loading}
           >
             Create
           </Btn>
