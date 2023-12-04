@@ -28,6 +28,7 @@ export default function Form() {
 
   const onPickImage = () => {
     setPicture(imagePickerState.uploadedImg);
+    imagePickerState.setVisible(false);
   };
 
   const onChange = (e: FormEvent<HTMLFormElement>) => {
