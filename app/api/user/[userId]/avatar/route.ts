@@ -1,8 +1,6 @@
 import prisma from "@/prisma";
-import { v4 } from "uuid";
-import { writeFile, access, mkdir, constants, unlink } from "fs/promises";
 import { NextResponse } from "next/server";
-import { join } from "path";
+import { removeImageLocally, saveImageLocally } from "@/app/_utilts/imagesFS";
 
 export async function PATCH(
   request: Request,
@@ -26,29 +24,12 @@ export async function PATCH(
       );
     }
 
-    const bytes = await image.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const avatarName = v4() + "__" + image.name;
-    const folder = join("public", "tmp");
-    const path = join(folder, avatarName);
-
-    try {
-      await access(folder, constants.F_OK);
-    } catch (e) {
-      await mkdir(folder);
-    }
-
-    await writeFile(path, buffer);
+    const avatarName = await saveImageLocally(image);
 
     const prevUser = await prisma.user.findFirst({ where: { id } });
 
     if (prevUser && prevUser?.image) {
-      try {
-        const prevImg = join(folder, prevUser.image);
-        await access(prevImg);
-        await unlink(prevImg);
-      } catch (e) {}
+      removeImageLocally(prevUser.image);
     }
 
     const user = await prisma.user.update({
