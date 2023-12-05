@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { PiSignOut } from "react-icons/pi";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import ModalWrapper from "../_components/UI/ModalWrapper";
 import Btn from "../_components/UI/Btn";
@@ -12,6 +12,7 @@ export default function HeaderSignOut() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const session = useSession();
 
   const onClick = async () => {
     try {
@@ -19,7 +20,9 @@ export default function HeaderSignOut() {
       await signOut({
         redirect: false,
       });
+      await session.update(null);
       router.replace("/sign-in");
+      router.refresh();
     } catch (e) {
       setLoading(false);
     }
