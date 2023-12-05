@@ -27,3 +27,22 @@ export const updateUserAvatarAction = async (formData: FormData) => {
 
   return user;
 };
+
+export const updateUserInfoAction = async ({
+  id,
+  updateDto,
+}: {
+  id: number;
+  updateDto: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+  };
+}) => {
+  const user = await prisma.user.update({
+    data: updateDto,
+    where: { id },
+  });
+
+  return user;
+};

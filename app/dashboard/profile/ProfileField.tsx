@@ -10,6 +10,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Input from "@/app/_components/UI/Input";
 import { ActiveFormEnum } from "./types";
 import Loader from "@/app/_components/UI/Loader";
+import { updateUserInfoAction } from "@/app/_server-actions/user";
 
 interface IProps {
   label: string;
@@ -63,21 +64,16 @@ export default function ProfileField({
         throw new Error("No value is found");
       }
 
-      const response = await fetch(
-        `/api/user/${session.data.user.id}/personal-info`,
-        {
-          method: "PATCH",
-          body: JSON.stringify({
-            [fieldName]: fieldValue,
-          }),
+      const user = await updateUserInfoAction({
+        id: session.data.user.id,
+        updateDto: {
+          [fieldName]: fieldValue,
         },
-      );
-
-      const user = await response.json();
+      });
 
       await session.update({
         ...session,
-        ...user,
+        user,
       });
       router.replace(pathname);
       router.refresh();
