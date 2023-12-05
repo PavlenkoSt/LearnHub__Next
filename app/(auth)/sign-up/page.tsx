@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
+import { createUserAction } from "@/app/_server-actions/user";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -29,22 +30,7 @@ export default function SignUp() {
         throw new Error("Passwords not match");
       }
 
-      const response = await fetch("/api/user", {
-        method: "POST",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result?.message);
-      }
+      await createUserAction({ email, password });
 
       const signInResult = await signIn("login", {
         email,
