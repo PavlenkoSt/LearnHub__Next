@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import ImagePicker, {
   useImagePickerState,
 } from "@/app/_components/UI/ImagePicker";
+import { updateUserAvatarAction } from "@/app/_server-actions/user";
 
 interface IProps {
   children: ReactNode;
@@ -32,30 +33,19 @@ export default function ProfileAvatar({ children }: IProps) {
 
       const formData = new FormData();
       formData.append("image", state.uploadedImg);
+      formData.append("userId", String(session.data.user.id));
 
-      const response = await fetch(`/api/user/${session.data.user.id}/avatar`, {
-        method: "PATCH",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (response.status >= 400 || !data) {
-        throw new Error(data.message || "Something went wrong");
-      }
+      const user = await updateUserAvatarAction(formData);
 
       state.setVisible(false);
       state.setUploadedImg(null);
 
-      await session.update({
-        ...session,
-        user: data.user,
-      });
+      await session.update({ ...session, user });
 
       router.refresh();
       toast.success("Avatar has been changed successfully");
     } catch (e: any) {
-      toast.error(e.message);
+      toast.error(e.message || "Something went wrong");
     } finally {
       state.setUploading(false);
     }
