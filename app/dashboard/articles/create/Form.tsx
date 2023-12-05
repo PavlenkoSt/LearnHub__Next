@@ -1,6 +1,7 @@
 "use client";
 
 import React, { FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
@@ -10,6 +11,7 @@ import ImagePicker, {
 } from "@/app/_components/UI/ImagePicker";
 import Avatar from "@/app/_components/UI/Avatar";
 import { useImagePreview } from "@/app/_hooks/useImagePreview";
+import { createArticleAction } from "@/app/_server-actions/articles";
 
 const DESCRIPTION_MAX_LEN = 250;
 
@@ -33,16 +35,12 @@ export default function Form() {
 
       if (picture) formData.append("picture", picture);
 
-      const response = await fetch("/api/articles/create", {
-        method: "POST",
-        body: formData,
-      });
+      const article = await createArticleAction(formData);
 
-      const result = await response.json();
-
-      router.push("/dashboard/articles/" + result.article.id);
-    } catch (e) {
+      router.push("/dashboard/articles/" + article.id);
+    } catch (e: any) {
       console.log("e", e);
+      toast.error(e.message || "Something went wrong");
       setLoading(false);
     }
   };
