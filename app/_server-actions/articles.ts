@@ -3,7 +3,7 @@
 import { getServerSession } from "next-auth";
 import prisma from "@/prisma";
 import { authOptions } from "@/next-auth.options";
-import { saveImageLocally } from "../_utilts/imagesFS";
+import { removeImageLocally, saveImageLocally } from "../_utilts/imagesFS";
 
 export const createArticleAction = async (formData: FormData) => {
   const name = formData.get("name")?.toString().trim();
@@ -30,4 +30,25 @@ export const createArticleAction = async (formData: FormData) => {
   });
 
   return article;
+};
+
+export const deleteArticleAction = async (id: number) => {
+  const session = await getServerSession();
+
+  const targetArticle = await prisma.article.findFirst({ where: { id } });
+
+  if (!targetArticle) throw new Error("Article not found");
+
+  const isOwner = targetArticle.userId === session?.user.id;
+
+  if (!isOwner)
+    throw new Error("You cannot delete article that not belongs to you");
+
+  const deleted = await prisma.article.delete({ where: { id } });
+
+  if (!deleted) throw new Error("Not deleted, something went wrong");
+
+  if (deleted.pictureUrl) await removeImageLocally(deleted.pictureUrl);
+
+  return deleted;
 };

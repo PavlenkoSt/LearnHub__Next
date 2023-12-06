@@ -7,6 +7,7 @@ import ProfileField from "./ProfileField";
 import { ActiveFormEnum } from "./types";
 import PageContainer from "@/app/_components/PageContainer";
 import Avatar from "@/app/_components/UI/Avatar";
+import { getImageSrc } from "@/app/_utilts/getImageSrc";
 
 export const dynamic = "force-dynamic";
 
@@ -21,11 +22,7 @@ export default async function Profile() {
         <div className="  flex items-center justify-center md:-mt-5">
           <ProfileAvatar>
             <Avatar
-              src={
-                !!session?.user?.image
-                  ? "/tmp/" + session.user.image
-                  : "/Avatar.svg"
-              }
+              src={getImageSrc(session?.user?.image) || "/Avatar.svg"}
               size={140}
               rounded
             />

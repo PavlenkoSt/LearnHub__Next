@@ -14,11 +14,13 @@ export default async function Articles() {
   return (
     <div>
       <Header />
-      <div>
+      <div className="md:px-2">
         {articles.length ? (
-          articles.map((article) => (
-            <ArticleCard key={article.id} article={article} />
-          ))
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+            {articles.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+          </div>
         ) : (
           <div className="mt-10 text-center text-xl font-semibold text-primary">
             There is no articles yet
