@@ -38,7 +38,7 @@ export default function HeaderSignOut() {
           <h2 className="mb-4 text-center text-xl font-medium">
             Leaving so soon?
           </h2>
-          <Btn loading={loading} onClick={onClick}>
+          <Btn isLoading={loading} onClick={onClick}>
             Sign Out
           </Btn>
         </div>

@@ -88,7 +88,7 @@ export default function SignUp() {
         <div className="text-sm text-red-600">{errorMessage}</div>
       )}
       <div className="flex items-center justify-between">
-        <Btn type="submit" loading={loading}>
+        <Btn type="submit" isLoading={loading}>
           Sign Up
         </Btn>
         <Link

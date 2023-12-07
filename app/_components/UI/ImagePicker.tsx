@@ -139,7 +139,7 @@ export default function ImagePicker({
                 />
               </div>
               <div className="flex w-full flex-1 items-center justify-center gap-12">
-                <Btn loading={uploading} onClick={onSave}>
+                <Btn isLoading={uploading} onClick={onSave}>
                   Save
                 </Btn>
                 <BtnDanger onClick={() => setUploadedImg(null)}>

@@ -90,7 +90,7 @@ export default function Form() {
           <Btn
             type="submit"
             className="flex w-full items-center justify-center text-center"
-            loading={loading}
+            isLoading={loading}
           >
             Create
           </Btn>
