@@ -22,7 +22,7 @@ export default async function Profile() {
         <div className="  flex items-center justify-center md:-mt-5">
           <ProfileAvatar>
             <Avatar
-              src={getImageSrc(session?.user?.image) || "/Avatar.svg"}
+              src={getImageSrc(user?.image) || "/Avatar.svg"}
               size={140}
               rounded
             />

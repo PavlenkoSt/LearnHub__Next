@@ -3,6 +3,9 @@
 import React, { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import * as yup from "yup";
 import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
 import TextArea from "@/app/_components/UI/TextArea";
@@ -12,8 +15,25 @@ import ImagePicker, {
 import Avatar from "@/app/_components/UI/Avatar";
 import { useImagePreview } from "@/app/_hooks/useImagePreview";
 import { createArticleAction } from "@/app/_server-actions/articles";
+import { twMerge } from "tailwind-merge";
 
 const DESCRIPTION_MAX_LEN = 250;
+
+interface IForm {
+  name: string;
+  description: string;
+}
+
+const validationSchema = yup.object({
+  name: yup
+    .string()
+    .required("Name is required")
+    .min(5, "Must contain at least 5 characters"),
+  description: yup
+    .string()
+    .required("Description is required")
+    .min(10, "Must contain at least 10 characters"),
+});
 
 export default function Form() {
   const [descriptionLength, setDescriptionLength] = useState(0);
@@ -25,13 +45,22 @@ export default function Form() {
   const imagePickerState = useImagePickerState();
   const imgPreview = useImagePreview(picture);
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    try {
-      e.preventDefault();
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      name: "",
+      description: "",
+    },
+    resolver: yupResolver(validationSchema),
+  });
 
+  const onSubmit: SubmitHandler<IForm> = async ({ name, description }) => {
+    try {
       setLoading(true);
 
-      const formData = new FormData(e.currentTarget);
+      const formData = new FormData();
+
+      formData.append("name", name);
+      formData.append("description", description);
 
       if (picture) formData.append("picture", picture);
 
@@ -63,30 +92,56 @@ export default function Form() {
           <Avatar src={imgPreview || "/placeholder.jpg"} size={200} />
         </ImagePicker>
         <form
-          onSubmit={onSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           onChange={onChange}
-          className="flex w-full flex-col"
+          className="flex w-full flex-col gap-2 md:gap-4"
         >
-          <Input
-            label="Name"
+          <Controller
             name="name"
-            minLength={5}
-            required
-            autoFocus={false}
+            control={control}
+            render={({ field, fieldState }) => (
+              <Input
+                value={field.value}
+                onChange={field.onChange}
+                label="Name"
+                color="primary"
+                errorMessage={fieldState.error?.message}
+                isInvalid={!!fieldState.error?.message}
+                autoFocus={false}
+              />
+            )}
           />
-          <div className="flex w-full flex-col items-end">
-            <TextArea
-              label="Description"
-              name="description"
-              maxLength={DESCRIPTION_MAX_LEN}
-              minLength={10}
-              required
-              autoFocus={false}
-            />
-            <div className="text-sm text-gray-500">
-              {descriptionLength}/{DESCRIPTION_MAX_LEN}
-            </div>
-          </div>
+          <Controller
+            name="description"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="flex w-full flex-col">
+                <TextArea
+                  value={field.value}
+                  onChange={field.onChange}
+                  label="Description"
+                  name="description"
+                  maxLength={DESCRIPTION_MAX_LEN}
+                  autoFocus={false}
+                  isInvalid={!!fieldState.error?.message}
+                  color="primary"
+                />
+                <div className="flex items-center justify-between">
+                  <div className="text-tiny text-danger p-[4px]">
+                    {fieldState.error?.message}
+                  </div>
+                  <div
+                    className={twMerge(
+                      "text-sm text-gray-500",
+                      !!fieldState.error?.message && "text-danger",
+                    )}
+                  >
+                    {descriptionLength}/{DESCRIPTION_MAX_LEN}
+                  </div>
+                </div>
+              </div>
+            )}
+          />
           <Btn
             type="submit"
             className="flex w-full items-center justify-center text-center"

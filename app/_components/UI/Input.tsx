@@ -1,25 +1,12 @@
 "use client";
 
-import React, { InputHTMLAttributes } from "react";
-import { twMerge } from "tailwind-merge";
+import { Input, InputProps } from "@nextui-org/react";
+import React from "react";
 
-interface IProps extends InputHTMLAttributes<HTMLInputElement> {
+interface IProps extends InputProps {
   label?: string;
 }
 
-export default function Input(props: IProps) {
-  const { className, label, ...rest } = props;
-
-  return (
-    <div className="flex w-full flex-col gap-1">
-      {!!label && <div className="">{label}</div>}
-      <input
-        className={twMerge(
-          "w-full rounded-md border-[1px] border-selected-dark px-4 py-2 outline-selected-dark transition-all",
-          className,
-        )}
-        {...rest}
-      />
-    </div>
-  );
+export default function InputComponent(props: IProps) {
+  return <Input {...props} />;
 }

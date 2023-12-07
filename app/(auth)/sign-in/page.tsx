@@ -1,15 +1,32 @@
 "use client";
 
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import * as yup from "yup";
+import Link from "next/link";
 import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+
+interface IForm {
+  email: string;
+  password: string;
+}
+
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Please enter valid email"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must contain at least 6 symbols"),
+});
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -17,10 +34,17 @@ export default function SignIn() {
   const searchParams = useSearchParams();
   const session = useSession();
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSubmit: SubmitHandler<IForm> = async ({ email, password }) => {
     if (loading) return;
 
-    e.preventDefault();
     try {
       setErrorMessage("");
       setLoading(true);
@@ -47,27 +71,40 @@ export default function SignIn() {
   }, [session.status, router]);
 
   return (
-    <form onSubmit={onSubmit} className="flex w-full flex-col gap-5">
-      <Input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex w-full flex-col gap-5"
+    >
+      <Controller
         name="email"
-        placeholder="Write email..."
-        label="Email"
-        autoComplete="email"
-        required
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input
+            value={field.value}
+            onChange={field.onChange}
+            label="Email"
+            autoComplete="email"
+            color="primary"
+            errorMessage={fieldState.error?.message}
+            isInvalid={!!fieldState.error?.message}
+          />
+        )}
       />
-      <Input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+      <Controller
         name="password"
-        minLength={6}
-        placeholder="Write a password..."
-        label="Password"
-        autoComplete="current-password"
-        required
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input
+            value={field.value}
+            onChange={field.onChange}
+            type="password"
+            label="Password"
+            autoComplete="current-password"
+            color="primary"
+            errorMessage={fieldState.error?.message}
+            isInvalid={!!fieldState.error?.message}
+          />
+        )}
       />
       {!!errorMessage && (
         <div className="text-sm text-red-600">{errorMessage}</div>

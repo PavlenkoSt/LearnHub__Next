@@ -1,27 +1,60 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import * as yup from "yup";
 import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
 import { createUserAction } from "@/app/_server-actions/user";
 
+interface IForm {
+  email: string;
+  password: string;
+  repeatedPassword: string;
+}
+
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Please enter valid email"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must contain at least 6 symbols"),
+  repeatedPassword: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must contain at least 6 symbols"),
+});
+
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatedPassword, setRepeatedPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+      repeatedPassword: "",
+    },
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSubmit: SubmitHandler<IForm> = async ({
+    email,
+    password,
+    repeatedPassword,
+  }) => {
     if (loading) return;
 
-    e.preventDefault();
     try {
       setLoading(true);
       setErrorMessage("");
@@ -30,7 +63,10 @@ export default function SignUp() {
         throw new Error("Passwords not match");
       }
 
-      await createUserAction({ email, password });
+      await createUserAction({
+        email,
+        password,
+      });
 
       const signInResult = await signIn("login", {
         email,
@@ -51,38 +87,56 @@ export default function SignUp() {
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex w-full flex-col gap-5">
-      <Input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex w-full flex-col gap-5"
+    >
+      <Controller
         name="email"
-        placeholder="Write email..."
-        label="Email"
-        autoComplete="email"
-        required
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input
+            value={field.value}
+            onChange={field.onChange}
+            label="Email"
+            autoComplete="email"
+            color="primary"
+            errorMessage={fieldState.error?.message}
+            isInvalid={!!fieldState.error?.message}
+          />
+        )}
       />
-      <Input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+      <Controller
         name="password"
-        minLength={6}
-        placeholder="Write a password..."
-        label="Password"
-        required
-        autoComplete="new-password"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input
+            value={field.value}
+            onChange={field.onChange}
+            type="password"
+            label="Password"
+            autoComplete="new-password"
+            color="primary"
+            errorMessage={fieldState.error?.message}
+            isInvalid={!!fieldState.error?.message}
+          />
+        )}
       />
-      <Input
-        type="password"
-        value={repeatedPassword}
-        onChange={(e) => setRepeatedPassword(e.target.value)}
+      <Controller
         name="repeatedPassword"
-        minLength={6}
-        placeholder="Write a password one more time..."
-        label="Repeat password"
-        autoComplete="repeat-password"
-        required
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input
+            value={field.value}
+            onChange={field.onChange}
+            type="password"
+            label="Repeat password"
+            autoComplete="repeat-password"
+            color="primary"
+            errorMessage={fieldState.error?.message}
+            isInvalid={!!fieldState.error?.message}
+          />
+        )}
       />
       {errorMessage && (
         <div className="text-sm text-red-600">{errorMessage}</div>

@@ -3,7 +3,6 @@
 import bcrypt from "bcryptjs";
 import prisma from "@/prisma";
 import { removeImageLocally, saveImageLocally } from "../_utilts/imagesFS";
-import { emailRegExp } from "../_utilts/regexps";
 
 export const createUserAction = async (dto: {
   email: string;
@@ -11,8 +10,8 @@ export const createUserAction = async (dto: {
 }) => {
   const { email, password } = dto;
 
-  if (!email || !emailRegExp.test(email)) {
-    throw new Error("Email is not valid");
+  if (!email) {
+    throw new Error("Email is not provided");
   }
 
   if (!password || password.length < 6) {
