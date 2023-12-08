@@ -101,6 +101,7 @@ export default function SignUp() {
             label="Email"
             autoComplete="email"
             color="primary"
+            placeholder=" "
             errorMessage={fieldState.error?.message}
             isInvalid={!!fieldState.error?.message}
           />
@@ -117,6 +118,7 @@ export default function SignUp() {
             label="Password"
             autoComplete="new-password"
             color="primary"
+            placeholder=" "
             errorMessage={fieldState.error?.message}
             isInvalid={!!fieldState.error?.message}
           />
@@ -133,6 +135,7 @@ export default function SignUp() {
             label="Repeat password"
             autoComplete="repeat-password"
             color="primary"
+            placeholder=" "
             errorMessage={fieldState.error?.message}
             isInvalid={!!fieldState.error?.message}
           />

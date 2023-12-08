@@ -84,6 +84,7 @@ export default function SignIn() {
             onChange={field.onChange}
             label="Email"
             autoComplete="email"
+            placeholder=" "
             color="primary"
             errorMessage={fieldState.error?.message}
             isInvalid={!!fieldState.error?.message}
@@ -99,7 +100,8 @@ export default function SignIn() {
             onChange={field.onChange}
             type="password"
             label="Password"
-            autoComplete="current-password"
+            autoComplete="password"
+            placeholder=" "
             color="primary"
             errorMessage={fieldState.error?.message}
             isInvalid={!!fieldState.error?.message}
