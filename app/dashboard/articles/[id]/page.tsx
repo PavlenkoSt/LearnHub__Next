@@ -28,7 +28,7 @@ export default async function Article({ params }: IProps) {
 
   return (
     <PageContainer>
-      <div className="my-2 flex items-center justify-between">
+      <div className="my-2 flex items-center justify-end md:justify-between">
         <BreadcrumbsComponent
           links={[
             { name: "Dashboard", href: "/dashboard" },
@@ -42,12 +42,13 @@ export default async function Article({ params }: IProps) {
         {isOwner && <Actions article={article} />}
       </div>
       <div>
-        <div>
-          <div>
+        <div className="flex flex-col gap-2 md:flex-row">
+          <div className="w-full md:w-[300px]">
             <Image
-              width={300}
-              height={300}
+              width={1000}
+              height={1000}
               alt="Article"
+              className="object-cover"
               src={
                 article.pictureUrl
                   ? (getImageSrc(article.pictureUrl) as string)
@@ -55,8 +56,10 @@ export default async function Article({ params }: IProps) {
               }
             />
           </div>
-          <h1>{article.name}</h1>
-          <div>{article.description}</div>
+          <div>
+            <h1 className="text-3xl font-bold text-primary">{article.name}</h1>
+            <h2 className="text-secondary">{article.description}</h2>
+          </div>
         </div>
       </div>
     </PageContainer>
