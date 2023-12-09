@@ -12,7 +12,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import ModalWrapper from "./ModalWrapper";
-import BtnDanger from "./BtnDanger";
 import Btn from "./Btn";
 import { useImagePreview } from "@/app/_hooks/useImagePreview";
 
@@ -142,9 +141,9 @@ export default function ImagePicker({
                 <Btn isLoading={uploading} onClick={onSave}>
                   Save
                 </Btn>
-                <BtnDanger onClick={() => setUploadedImg(null)}>
+                <Btn color="danger" onClick={() => setUploadedImg(null)}>
                   Cancel
-                </BtnDanger>
+                </Btn>
               </div>
             </div>
           ) : (
