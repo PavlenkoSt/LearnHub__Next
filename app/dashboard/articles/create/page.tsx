@@ -1,7 +1,7 @@
 import React from "react";
-import Form from "./Form";
 import PageContainer from "@/app/_components/PageContainer";
 import BreadcrumbsComponent from "@/app/_components/UI/Breadcrumbs";
+import ArticleForm from "@/app/_components/ArticleForm";
 
 export default function CreateArticle() {
   return (
@@ -19,7 +19,7 @@ export default function CreateArticle() {
         <h2 className="mb-6 mt-6 text-center text-xl font-semibold text-primary md:mb-8 md:mt-2">
           Create article
         </h2>
-        <Form />
+        <ArticleForm />
       </div>
     </PageContainer>
   );

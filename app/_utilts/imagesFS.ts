@@ -1,4 +1,13 @@
-import { access, constants, mkdir, unlink, writeFile } from "fs/promises";
+"use server";
+
+import {
+  access,
+  constants,
+  mkdir,
+  unlink,
+  writeFile,
+  readFile,
+} from "fs/promises";
 import { join } from "path";
 import { v4 } from "uuid";
 

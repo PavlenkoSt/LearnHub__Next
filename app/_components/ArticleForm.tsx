@@ -10,19 +10,28 @@ import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
 import TextArea from "@/app/_components/UI/TextArea";
 import { twMerge } from "tailwind-merge";
-import { revalidatePath } from "next/cache";
 import ImagePicker, {
   useImagePickerState,
 } from "@/app/_components/UI/ImagePicker";
 import Avatar from "@/app/_components/UI/Avatar";
 import { useImagePreview } from "@/app/_hooks/useImagePreview";
-import { createArticleAction } from "@/app/_server-actions/articles";
+import {
+  createArticleAction,
+  updateArticleAction,
+} from "@/app/_server-actions/articles";
+import ArticleBodyEditor from "./ArticleBodyEditor";
+import type { Article } from "@prisma/client";
+import { getImageSrc } from "../_utilts/getImageSrc";
 
 const DESCRIPTION_MAX_LEN = 250;
 
 interface IForm {
   name: string;
   description: string;
+}
+
+interface IProps {
+  article?: Article;
 }
 
 const validationSchema = yup.object({
@@ -36,8 +45,11 @@ const validationSchema = yup.object({
     .min(10, "Must contain at least 10 characters"),
 });
 
-export default function Form() {
-  const [descriptionLength, setDescriptionLength] = useState(0);
+export default function ArticleForm({ article }: IProps) {
+  const [descriptionLength, setDescriptionLength] = useState(
+    () => article?.description.length || 0,
+  );
+  const [body, setBody] = useState(() => article?.body || "");
   const [picture, setPicture] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -48,8 +60,8 @@ export default function Form() {
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      name: "",
-      description: "",
+      name: article?.name || "",
+      description: article?.description || "",
     },
     resolver: yupResolver(validationSchema),
   });
@@ -62,12 +74,15 @@ export default function Form() {
 
       formData.append("name", name);
       formData.append("description", description);
+      formData.append("body", body);
 
       if (picture) formData.append("picture", picture);
 
-      const article = await createArticleAction(formData);
+      const resultArticle = article
+        ? await updateArticleAction(formData, article.id)
+        : await createArticleAction(formData);
 
-      router.push("/dashboard/articles/" + article.id);
+      router.push("/dashboard/articles/" + resultArticle.id);
     } catch (e: any) {
       console.log("e", e);
       toast.error(e.message || "Something went wrong");
@@ -87,15 +102,24 @@ export default function Form() {
   };
 
   return (
-    <>
-      <div className="flex w-full flex-col items-center justify-center gap-4 md:flex-row md:items-start">
+    <div className="flex w-full flex-col items-center justify-center gap-4">
+      <div className="flex w-full flex-col items-center justify-center gap-4 md:flex-row">
         <ImagePicker onSave={onPickImage} state={imagePickerState}>
-          <Avatar src={imgPreview || "/placeholder.jpg"} size={200} />
+          <Avatar
+            src={
+              imgPreview ||
+              (article?.pictureUrl
+                ? getImageSrc(article!.pictureUrl) || "/placeholder.jpg"
+                : "/placeholder.jpg")
+            }
+            size={200}
+          />
         </ImagePicker>
         <form
           onSubmit={handleSubmit(onSubmit)}
           onChange={onChange}
-          className="flex w-full flex-col gap-2 md:gap-4"
+          className="md-gap-4 flex w-full flex-col gap-2"
+          id="form"
         >
           <Controller
             name="name"
@@ -116,7 +140,7 @@ export default function Form() {
             name="description"
             control={control}
             render={({ field, fieldState }) => (
-              <div className="flex w-full flex-col">
+              <div className="flex h-full w-full flex-1 flex-col">
                 <TextArea
                   value={field.value}
                   onChange={field.onChange}
@@ -143,15 +167,20 @@ export default function Form() {
               </div>
             )}
           />
-          <Btn
-            type="submit"
-            className="flex w-full items-center justify-center text-center"
-            isLoading={loading}
-          >
-            Create
-          </Btn>
         </form>
       </div>
-    </>
+      <h3 className="text-primary">Article body:</h3>
+      <div className="mb-2 flex w-full">
+        <ArticleBodyEditor value={body} setValue={setBody} />
+      </div>
+      <Btn
+        type="submit"
+        form="form"
+        className="flex w-full items-center justify-center text-center"
+        isLoading={loading}
+      >
+        {article ? "Update" : "Create"}
+      </Btn>
+    </div>
   );
 }

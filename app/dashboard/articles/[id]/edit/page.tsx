@@ -1,10 +1,11 @@
+import React from "react";
+import { getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
+import prisma from "@/prisma";
 import PageContainer from "@/app/_components/PageContainer";
 import BreadcrumbsComponent from "@/app/_components/UI/Breadcrumbs";
 import { authOptions } from "@/next-auth.options";
-import prisma from "@/prisma";
-import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
-import React from "react";
+import ArticleForm from "@/app/_components/ArticleForm";
 
 interface IProps {
   params: {
@@ -40,7 +41,12 @@ export default async function Edit({ params }: IProps) {
             },
           ]}
         />
-        <div>Edit</div>
+      </div>
+      <div className="flex flex-col items-center justify-center">
+        <h2 className="mb-6 mt-6 text-center text-xl font-semibold text-primary md:mb-8 md:mt-2">
+          Update article "{article.name}"
+        </h2>
+        <ArticleForm article={article} />
       </div>
     </PageContainer>
   );
