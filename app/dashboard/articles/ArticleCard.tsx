@@ -1,15 +1,17 @@
 import React from "react";
 import Image from "next/image";
-import type { Article } from "@prisma/client";
+import type { Article, User } from "@prisma/client";
 import { getImageSrc } from "@/app/_utilts/getImageSrc";
 import Link from "next/link";
-import Btn from "@/app/_components/UI/Btn";
 
 interface IProps {
-  article: Article;
+  article: Article & { owner: User };
 }
 
 export default function ArticleCard({ article }: IProps) {
+  const { firstName, lastName } = article.owner;
+  const owner = firstName && lastName ? `${firstName} ${lastName}` : "Noname";
+
   return (
     <Link href={`/dashboard/articles/${article.id}`}>
       <div className="group flex h-full flex-col overflow-hidden rounded-md border-[1px] border-primary bg-[#fff]">
@@ -19,7 +21,7 @@ export default function ArticleCard({ article }: IProps) {
             width={300}
             height={200}
             alt="Article"
-            className="min-h-[200px] min-w-full object-cover"
+            className="min-h-[200px] min-w-full scale-[110%] object-cover transition-all group-hover:scale-[100%]"
           />
         </div>
         <div className="flex flex-1 flex-col justify-between gap-1 p-3">
@@ -29,8 +31,13 @@ export default function ArticleCard({ article }: IProps) {
               {article.description}
             </div>
           </div>
-          <div className="self-end font-medium text-primary transition-all group-hover:text-secondary group-hover:underline">
-            Learn more
+          <div className="flex items-center justify-between">
+            <div className="text-sm italic">
+              by <span>{owner}</span>
+            </div>
+            <div className="font-medium text-primary transition-all group-hover:text-secondary">
+              Learn more
+            </div>
           </div>
         </div>
       </div>

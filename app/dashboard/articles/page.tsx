@@ -15,6 +15,8 @@ interface IProps {
 
 const pageSize = 12;
 
+export const dynamic = "force-dynamic";
+
 export default async function Articles({ searchParams }: IProps) {
   const session = await getServerSession();
 
@@ -26,6 +28,9 @@ export default async function Articles({ searchParams }: IProps) {
       skip: (page - 1) * pageSize,
       orderBy: {
         id: "desc",
+      },
+      include: {
+        owner: true,
       },
     }),
     prisma.article.count(),

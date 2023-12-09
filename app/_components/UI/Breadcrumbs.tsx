@@ -5,8 +5,13 @@ import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+export interface IBreadcrumb {
+  name: string;
+  href: string;
+}
+
 interface IProps {
-  links: { name: string; href: string }[];
+  links: IBreadcrumb[];
 }
 
 export default function BreadcrumbsComponent({ links }: IProps) {

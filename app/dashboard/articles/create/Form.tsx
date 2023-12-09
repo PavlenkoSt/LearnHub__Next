@@ -9,13 +9,14 @@ import * as yup from "yup";
 import Btn from "@/app/_components/UI/Btn";
 import Input from "@/app/_components/UI/Input";
 import TextArea from "@/app/_components/UI/TextArea";
+import { twMerge } from "tailwind-merge";
+import { revalidatePath } from "next/cache";
 import ImagePicker, {
   useImagePickerState,
 } from "@/app/_components/UI/ImagePicker";
 import Avatar from "@/app/_components/UI/Avatar";
 import { useImagePreview } from "@/app/_hooks/useImagePreview";
 import { createArticleAction } from "@/app/_server-actions/articles";
-import { twMerge } from "tailwind-merge";
 
 const DESCRIPTION_MAX_LEN = 250;
 
@@ -127,7 +128,7 @@ export default function Form() {
                   color="primary"
                 />
                 <div className="flex items-center justify-between">
-                  <div className="text-tiny text-danger p-[4px]">
+                  <div className="p-[4px] text-tiny text-danger">
                     {fieldState.error?.message}
                   </div>
                   <div
