@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import prisma from "@/prisma";
 import { authOptions } from "@/next-auth.options";
 import { removeImageLocally, saveImageLocally } from "../_utilts/imagesFS";
+import { revalidatePath } from "next/cache";
 
 export const createArticleAction = async (formData: FormData) => {
   const name = formData.get("name")?.toString().trim();
@@ -29,11 +30,13 @@ export const createArticleAction = async (formData: FormData) => {
     },
   });
 
+  revalidatePath("/dashboard/articles");
+
   return article;
 };
 
 export const deleteArticleAction = async (id: number) => {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   const targetArticle = await prisma.article.findFirst({ where: { id } });
 
@@ -49,6 +52,8 @@ export const deleteArticleAction = async (id: number) => {
   if (!deleted) throw new Error("Not deleted, something went wrong");
 
   if (deleted.pictureUrl) await removeImageLocally(deleted.pictureUrl);
+
+  revalidatePath("/dashboard/articles");
 
   return deleted;
 };
