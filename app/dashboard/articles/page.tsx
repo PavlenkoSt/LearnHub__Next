@@ -4,6 +4,7 @@ import prisma from "@/prisma";
 import Header from "./Header";
 import ArticleCard from "./ArticleCard";
 import Pagination from "@/app/_components/UI/Pagination";
+import { redirect } from "next/navigation";
 
 interface ISearchParams {
   page?: string;
@@ -37,6 +38,10 @@ export default async function Articles({ searchParams }: IProps) {
   ]);
 
   const totalPages = Math.ceil(articlesCount / pageSize);
+
+  if (totalPages < page) {
+    return redirect("/dashboard/articles?page=" + totalPages);
+  }
 
   return (
     <div>
