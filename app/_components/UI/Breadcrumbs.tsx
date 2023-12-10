@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 export interface IBreadcrumb {
   name: string;
   href: string;
+  pressable?: boolean;
 }
 
 interface IProps {
@@ -21,7 +22,8 @@ export default function BreadcrumbsComponent({ links }: IProps) {
     <Breadcrumbs variant="bordered" className="hidden md:flex">
       {links.map((link) => (
         <BreadcrumbItem key={link.href}>
-          {pathname === link.href ? (
+          {(pathname === link.href && link.pressable === undefined) ||
+          link.pressable === false ? (
             link.name
           ) : (
             <Link href={link.href}>{link.name}</Link>

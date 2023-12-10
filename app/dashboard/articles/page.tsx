@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 
 interface ISearchParams {
   page?: string;
+  search?: string;
 }
 
 interface IProps {
@@ -22,6 +23,7 @@ export default async function Articles({ searchParams }: IProps) {
   const session = await getServerSession();
 
   const page = typeof searchParams.page === "string" ? +searchParams.page : 1;
+  const search = searchParams.search || "";
 
   const [articles, articlesCount] = await prisma.$transaction([
     prisma.article.findMany({
@@ -32,6 +34,40 @@ export default async function Articles({ searchParams }: IProps) {
       },
       include: {
         owner: true,
+      },
+      where: {
+        OR: [
+          {
+            name: {
+              mode: "insensitive",
+              contains: search,
+            },
+          },
+          {
+            description: {
+              mode: "insensitive",
+              contains: search,
+            },
+          },
+          {
+            owner: {
+              OR: [
+                {
+                  firstName: {
+                    mode: "insensitive",
+                    contains: search,
+                  },
+                },
+                {
+                  lastName: {
+                    mode: "insensitive",
+                    contains: search,
+                  },
+                },
+              ],
+            },
+          },
+        ],
       },
     }),
     prisma.article.count(),
@@ -45,7 +81,7 @@ export default async function Articles({ searchParams }: IProps) {
 
   return (
     <div>
-      <Header />
+      <Header search={search} />
       <div className="md:px-2">
         {articles.length ? (
           <div>
