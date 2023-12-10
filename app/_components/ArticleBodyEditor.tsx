@@ -23,7 +23,7 @@ export default function ArticleBodyEditor({ value, setValue }: IProps) {
           ["blockquote", "code-block"],
           [{ script: "sub" }, { script: "super" }],
           [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "image"],
+          ["link"],
 
           ["clean"],
         ],

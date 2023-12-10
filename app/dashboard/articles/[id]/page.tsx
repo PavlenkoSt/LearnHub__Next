@@ -8,6 +8,7 @@ import PageContainer from "@/app/_components/PageContainer";
 import BreadcrumbsComponent from "@/app/_components/UI/Breadcrumbs";
 import { getImageSrc } from "@/app/_utilts/getImageSrc";
 import Actions from "./Actions";
+import ArticleBody from "./ArticleBody";
 
 interface IProps {
   params: {
@@ -61,6 +62,11 @@ export default async function Article({ params }: IProps) {
             <h2 className="text-secondary">{article.description}</h2>
           </div>
         </div>
+        {!article.body ? (
+          <div className="my-4 text-center text-secondary">Empty body</div>
+        ) : (
+          <ArticleBody body={article.body} />
+        )}
       </div>
     </PageContainer>
   );
