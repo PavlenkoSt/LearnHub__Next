@@ -24,7 +24,7 @@ export default function HeaderFilter() {
       color="primary"
       variant="bordered"
       options={filterOptions}
-      className="max-w-[14rem]"
+      className="md:max-w-[14rem]"
       selectedKeys={filter}
       onChange={(e) => {
         const search = new URLSearchParams(searchParams);
