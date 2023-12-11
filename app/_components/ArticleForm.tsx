@@ -20,18 +20,22 @@ import {
   updateArticleAction,
 } from "@/app/_server-actions/articles";
 import ArticleBodyEditor from "./ArticleBodyEditor";
-import type { Article } from "@prisma/client";
+import type { Article, ArticleCategory } from "@prisma/client";
 import { getImageSrc } from "../_utilts/getImageSrc";
+import AutocompleteComponent from "./UI/Autocomplete";
+import { createCategoryAction } from "../_server-actions/categories";
 
 const DESCRIPTION_MAX_LEN = 250;
 
 interface IForm {
   name: string;
   description: string;
+  category?: string;
 }
 
 interface IProps {
-  article?: Article;
+  article?: Article & { category: ArticleCategory | null };
+  categories: ArticleCategory[];
 }
 
 const validationSchema = yup.object({
@@ -43,9 +47,10 @@ const validationSchema = yup.object({
     .string()
     .required("Description is required")
     .min(10, "Must contain at least 10 characters"),
+  category: yup.string().optional(),
 });
 
-export default function ArticleForm({ article }: IProps) {
+export default function ArticleForm({ article, categories }: IProps) {
   const [descriptionLength, setDescriptionLength] = useState(
     () => article?.description.length || 0,
   );
@@ -62,11 +67,16 @@ export default function ArticleForm({ article }: IProps) {
     defaultValues: {
       name: article?.name || "",
       description: article?.description || "",
+      category: article?.category?.name || "",
     },
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit: SubmitHandler<IForm> = async ({ name, description }) => {
+  const onSubmit: SubmitHandler<IForm> = async ({
+    name,
+    description,
+    category,
+  }) => {
     try {
       setLoading(true);
 
@@ -77,6 +87,19 @@ export default function ArticleForm({ article }: IProps) {
       formData.append("body", body);
 
       if (picture) formData.append("picture", picture);
+
+      if (category) {
+        const existCategory = categories.find(
+          (cat) => cat.name.toLowerCase() === category.toLowerCase(),
+        );
+
+        if (existCategory) {
+          formData.append("categoryId", existCategory.id.toString());
+        } else {
+          const createdCategory = await createCategoryAction(category);
+          formData.append("categoryId", createdCategory.id.toString());
+        }
+      }
 
       const resultArticle = article
         ? await updateArticleAction(formData, article.id)
@@ -133,6 +156,31 @@ export default function ArticleForm({ article }: IProps) {
                 errorMessage={fieldState.error?.message}
                 isInvalid={!!fieldState.error?.message}
                 autoFocus={false}
+              />
+            )}
+          />
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <AutocompleteComponent
+                inputValue={field.value}
+                onSelectionChange={(key) => {
+                  field.onChange(key as string);
+                }}
+                onInputChange={field.onChange}
+                items={categories.map((category) => ({
+                  label: category.name,
+                  value: category.name,
+                }))}
+                defaultFilter={(text, input) =>
+                  text.toLowerCase().includes(input?.toLowerCase())
+                }
+                label="Category"
+                className="w-full"
+                color="primary"
+                maxLength={25}
+                placeholder=" "
               />
             )}
           />

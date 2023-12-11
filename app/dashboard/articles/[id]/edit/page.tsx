@@ -1,11 +1,12 @@
 import React from "react";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import prisma from "@/prisma";
+import { getArticleByIdAction } from "@/app/_server-actions/articles";
 import PageContainer from "@/app/_components/PageContainer";
 import BreadcrumbsComponent from "@/app/_components/UI/Breadcrumbs";
 import { authOptions } from "@/next-auth.options";
 import ArticleForm from "@/app/_components/ArticleForm";
+import { getCategoriesAction } from "@/app/_server-actions/categories";
 
 interface IProps {
   params: {
@@ -15,9 +16,12 @@ interface IProps {
 
 export default async function Edit({ params }: IProps) {
   const session = await getServerSession(authOptions);
-  const article = isNaN(+params.id)
-    ? null
-    : await prisma.article.findFirst({ where: { id: +params.id } });
+
+  const [article, categories] = await Promise.all([
+    isNaN(+params.id) ? null : getArticleByIdAction(+params.id),
+    getCategoriesAction(),
+  ]);
+
   const isOwner = article?.userId === session?.user.id;
 
   if (!article || !isOwner) {
@@ -46,7 +50,7 @@ export default async function Edit({ params }: IProps) {
         <h2 className="mb-6 mt-6 text-center text-xl font-semibold text-primary md:mb-8 md:mt-2">
           Update article &ldquo;{article.name}&ldquo;
         </h2>
-        <ArticleForm article={article} />
+        <ArticleForm article={article} categories={categories} />
       </div>
     </PageContainer>
   );

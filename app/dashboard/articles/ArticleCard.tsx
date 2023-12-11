@@ -1,11 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import type { Article, User } from "@prisma/client";
+import type { Article, ArticleCategory, User } from "@prisma/client";
 import { getImageSrc } from "@/app/_utilts/getImageSrc";
 import Link from "next/link";
 
 interface IProps {
-  article: Article & { owner: User };
+  article: Article & { owner: User; category: ArticleCategory | null };
 }
 
 export default function ArticleCard({ article }: IProps) {
@@ -15,7 +15,7 @@ export default function ArticleCard({ article }: IProps) {
   return (
     <Link href={`/dashboard/articles/${article.id}`}>
       <div className="group flex h-full flex-col overflow-hidden rounded-md border-[1px] border-primary bg-[#fff]">
-        <div className="flex h-[200px] w-full items-center justify-center overflow-hidden">
+        <div className="relative flex h-[200px] w-full items-center justify-center overflow-hidden">
           <Image
             src={getImageSrc(article.pictureUrl) || "/placeholder.jpg"}
             width={300}
@@ -23,6 +23,11 @@ export default function ArticleCard({ article }: IProps) {
             alt="Article"
             className="min-h-[200px] min-w-full scale-[110%] object-cover transition-all group-hover:scale-[100%]"
           />
+          {!!article.category && (
+            <div className="absolute right-0 top-0 z-20 rounded-bl-xl bg-primary px-2 py-1 text-sm text-white">
+              {article.category.name}
+            </div>
+          )}
         </div>
         <div className="flex flex-1 flex-col justify-between gap-1 p-3">
           <div>

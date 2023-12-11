@@ -1,12 +1,12 @@
 import React from "react";
 import { getServerSession } from "next-auth";
-import prisma from "@/prisma";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/next-auth.options";
 import Pagination from "@/app/_components/UI/Pagination";
 import Header from "./Header";
 import ArticleCard from "./ArticleCard";
 import { ArticleFilterEnum, ISearchParams } from "./types";
+import { getFilteredArticlesWithCountAction } from "@/app/_server-actions/articles";
 
 interface IProps {
   searchParams: ISearchParams;
@@ -23,70 +23,15 @@ export default async function Articles({ searchParams }: IProps) {
   const search = searchParams.search || "";
   const filter = searchParams.filter || ArticleFilterEnum.ALL;
 
-  const [articles, articlesCount] = await prisma.$transaction([
-    prisma.article.findMany({
-      take: pageSize,
-      skip: (page - 1) * pageSize,
-      orderBy: {
-        id: "desc",
-      },
-      include: {
-        owner: true,
-      },
-      where: {
-        AND: [
-          filter === ArticleFilterEnum.ONLY_MINE
-            ? {
-                userId: {
-                  equals: session?.user.id,
-                },
-              }
-            : filter === ArticleFilterEnum.ONLY_OTHERS
-            ? {
-                userId: {
-                  not: session?.user.id,
-                },
-              }
-            : {},
-          {
-            OR: [
-              {
-                name: {
-                  mode: "insensitive",
-                  contains: search,
-                },
-              },
-              {
-                description: {
-                  mode: "insensitive",
-                  contains: search,
-                },
-              },
-              {
-                owner: {
-                  OR: [
-                    {
-                      firstName: {
-                        mode: "insensitive",
-                        contains: search,
-                      },
-                    },
-                    {
-                      lastName: {
-                        mode: "insensitive",
-                        contains: search,
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
-      },
-    }),
-    prisma.article.count(),
-  ]);
+  if (!session?.user) redirect("/sign-in");
+
+  const [articles, articlesCount] = await getFilteredArticlesWithCountAction({
+    page,
+    pageSize,
+    search,
+    filter,
+    userId: session.user.id,
+  });
 
   const totalPages = Math.ceil(articlesCount / pageSize);
 
