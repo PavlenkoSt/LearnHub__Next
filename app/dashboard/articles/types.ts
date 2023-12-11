@@ -8,4 +8,5 @@ export interface ISearchParams {
   page?: string;
   search?: string;
   filter?: ArticleFilterEnum;
+  category?: string;
 }

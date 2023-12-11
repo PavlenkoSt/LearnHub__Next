@@ -7,6 +7,7 @@ import Header from "./Header";
 import ArticleCard from "./ArticleCard";
 import { ArticleFilterEnum, ISearchParams } from "./types";
 import { getFilteredArticlesWithCountAction } from "@/app/_server-actions/articles";
+import { getCategoriesAction } from "@/app/_server-actions/categories";
 
 interface IProps {
   searchParams: ISearchParams;
@@ -22,16 +23,26 @@ export default async function Articles({ searchParams }: IProps) {
   const page = typeof searchParams.page === "string" ? +searchParams.page : 1;
   const search = searchParams.search || "";
   const filter = searchParams.filter || ArticleFilterEnum.ALL;
+  const categoryId =
+    searchParams.category && !isNaN(+searchParams.category)
+      ? searchParams.category
+      : "0";
 
   if (!session?.user) redirect("/sign-in");
 
-  const [articles, articlesCount] = await getFilteredArticlesWithCountAction({
-    page,
-    pageSize,
-    search,
-    filter,
-    userId: session.user.id,
-  });
+  const [articlesResponse, categories] = await Promise.all([
+    getFilteredArticlesWithCountAction({
+      page,
+      pageSize,
+      search,
+      filter,
+      categoryId,
+      userId: session.user.id,
+    }),
+    getCategoriesAction(),
+  ]);
+
+  const [articles, articlesCount] = articlesResponse;
 
   const totalPages = Math.ceil(articlesCount / pageSize);
 
@@ -41,7 +52,7 @@ export default async function Articles({ searchParams }: IProps) {
 
   return (
     <div>
-      <Header search={search} />
+      <Header search={search} categories={categories} />
       <div className="md:px-2">
         {articles.length ? (
           <div>

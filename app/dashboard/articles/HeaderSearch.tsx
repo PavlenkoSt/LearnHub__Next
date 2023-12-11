@@ -35,7 +35,7 @@ export default function HeaderSearch({ search }: IProps) {
         onChange(value);
       }}
       variant="bordered"
-      className="md:max-w-[16rem]"
+      className="md:max-w-[14rem]"
       placeholder=" "
       label="Search articles"
       isClearable

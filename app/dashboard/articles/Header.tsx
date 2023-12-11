@@ -1,14 +1,18 @@
 import Link from "next/link";
 import React from "react";
+import type { ArticleCategory } from "@prisma/client";
 import BreadcrumbsComponent from "@/app/_components/UI/Breadcrumbs";
 import HeaderFilter from "./HeaderFilter";
 import HeaderSearch from "./HeaderSearch";
+import HeaderCategories from "./HeaderCategories";
+import HeaderResetFilters from "./HeaderResetFilters";
 
 interface IProps {
   search: string;
+  categories: ArticleCategory[];
 }
 
-export default function Header({ search }: IProps) {
+export default function Header({ search, categories }: IProps) {
   const breadcrumbs = [
     { name: "Dashboard", href: "/dashboard" },
     { name: "Articles", href: "/dashboard/articles", pressable: !!search },
@@ -25,10 +29,12 @@ export default function Header({ search }: IProps) {
   return (
     <header className="md:px-2 md:pt-2">
       <BreadcrumbsComponent links={breadcrumbs} />
-      <div className="flex flex-col justify-between py-2 md:flex-row  md:items-center">
-        <div className="mb-2 flex flex-1 items-center gap-2 md:mb-0">
+      <div className="flex flex-col justify-between gap-2 py-2 md:flex-row md:items-center">
+        <div className="mb-2 flex flex-1 flex-col items-end gap-2 md:mb-0 md:flex-row md:flex-nowrap md:items-center">
           <HeaderFilter />
+          <HeaderCategories categories={categories} />
           <HeaderSearch search={search} />
+          <HeaderResetFilters />
         </div>
         <Link
           href="/dashboard/articles/create"

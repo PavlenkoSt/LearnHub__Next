@@ -143,12 +143,14 @@ export const getFilteredArticlesWithCountAction = async ({
   search,
   userId,
   filter,
+  categoryId,
 }: {
   pageSize: number;
   page: number;
   search: string;
   userId: number;
   filter: ArticleFilterEnum;
+  categoryId: string;
 }) => {
   return await prisma.$transaction([
     prisma.article.findMany({
@@ -176,6 +178,16 @@ export const getFilteredArticlesWithCountAction = async ({
                 },
               }
             : {},
+          categoryId === "0" || isNaN(+categoryId)
+            ? {}
+            : {
+                category: {
+                  id: {
+                    equals: +categoryId,
+                  },
+                },
+              },
+
           {
             OR: [
               {
