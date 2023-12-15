@@ -1,13 +1,11 @@
 import React from "react";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/next-auth.options";
-import Pagination from "@/app/_components/UI/Pagination";
-import Header from "./Header";
-import ArticleCard from "./ArticleCard";
-import { ArticleFilterEnum, ISearchParams } from "./types";
 import { getFilteredArticlesWithCountAction } from "@/app/_server-actions/articles";
 import { getCategoriesAction } from "@/app/_server-actions/categories";
+import Pagination from "@/app/_components/UI/Pagination";
+import { ArticleFilterEnum, ISearchParams } from "./types";
+import Header from "./Header";
+import ArticleCard from "./ArticleCard";
 
 interface IProps {
   searchParams: ISearchParams;
@@ -18,8 +16,6 @@ const pageSize = 12;
 export const dynamic = "force-dynamic";
 
 export default async function Articles({ searchParams }: IProps) {
-  const session = await getServerSession(authOptions);
-
   const page = typeof searchParams.page === "string" ? +searchParams.page : 1;
   const search = searchParams.search || "";
   const filter = searchParams.filter || ArticleFilterEnum.ALL;
@@ -28,8 +24,6 @@ export default async function Articles({ searchParams }: IProps) {
       ? searchParams.category
       : "0";
 
-  if (!session?.user) redirect("/sign-in");
-
   const [articlesResponse, categories] = await Promise.all([
     getFilteredArticlesWithCountAction({
       page,
@@ -37,7 +31,6 @@ export default async function Articles({ searchParams }: IProps) {
       search,
       filter,
       categoryId,
-      userId: session.user.id,
     }),
     getCategoriesAction(),
   ]);

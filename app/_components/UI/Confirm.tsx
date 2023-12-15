@@ -10,6 +10,7 @@ interface IProps {
   onConfirm: () => Promise<void> | void;
   btnProps?: IBtnProps;
   loading?: boolean;
+  isIconOnly?: boolean;
 }
 
 export default function Confirm({

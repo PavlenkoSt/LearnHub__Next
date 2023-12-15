@@ -31,7 +31,7 @@ export default function Actions({ article }: IProps) {
 
   return (
     <div className="flex items-center justify-center gap-2">
-      <Btn onPress={() => router.push(pathname + "/edit")} size="sm">
+      <Btn isIconOnly onPress={() => router.push(pathname + "/edit")} size="sm">
         <FaEdit size={20} />
       </Btn>
       <Confirm
@@ -40,6 +40,7 @@ export default function Actions({ article }: IProps) {
         btnProps={{
           size: "sm",
           color: "danger",
+          isIconOnly: true,
         }}
         loading={loading}
       >

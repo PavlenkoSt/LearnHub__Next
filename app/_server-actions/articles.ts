@@ -141,17 +141,21 @@ export const getFilteredArticlesWithCountAction = async ({
   pageSize,
   page,
   search,
-  userId,
   filter,
   categoryId,
 }: {
   pageSize: number;
   page: number;
   search: string;
-  userId: number;
   filter: ArticleFilterEnum;
   categoryId: string;
 }) => {
+  const session = await getServerSession(authOptions);
+
+  const userId = session?.user.id;
+
+  if (!userId) throw new Error("You are unauthorized");
+
   return await prisma.$transaction([
     prisma.article.findMany({
       take: pageSize,

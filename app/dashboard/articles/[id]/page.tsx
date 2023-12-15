@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import React from "react";
 import { authOptions } from "@/next-auth.options";
@@ -9,6 +10,7 @@ import PageContainer from "@/app/_components/PageContainer";
 import { getImageSrc } from "@/app/_utilts/getImageSrc";
 import Actions from "./Actions";
 import ArticleBody from "./ArticleBody";
+import Comments from "./Comments";
 
 interface IProps {
   params: {
@@ -74,7 +76,11 @@ export default async function Article({ params }: IProps) {
         ) : (
           <ArticleBody body={article.body} />
         )}
+        <div className="my-8">
+          <Comments articleId={+params.id} />
+        </div>
       </div>
+      <Toaster />
     </PageContainer>
   );
 }
