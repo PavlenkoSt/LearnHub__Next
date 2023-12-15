@@ -51,7 +51,7 @@ model ArticleComment {
   userId      Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  repliedToId Int
+  repliedToId Int?
   Article     Article  @relation(fields: [articleId], references: [id])
   articleId   Int
 }
