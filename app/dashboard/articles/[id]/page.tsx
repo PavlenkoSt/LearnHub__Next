@@ -46,7 +46,7 @@ export default async function Article({ params }: IProps) {
       </div>
       <div>
         <div className="flex flex-col gap-2 md:flex-row">
-          <div className="w-full md:w-[300px]">
+          <div className="w-full overflow-hidden rounded-lg md:w-[300px]">
             <Image
               width={1000}
               height={1000}
