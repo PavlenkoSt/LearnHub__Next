@@ -39,7 +39,7 @@ export default async function Articles({ searchParams }: IProps) {
 
   const totalPages = Math.ceil(articlesCount / pageSize);
 
-  if (totalPages < page) {
+  if (totalPages < page && totalPages !== 0) {
     return redirect("/dashboard/articles?page=" + totalPages);
   }
 

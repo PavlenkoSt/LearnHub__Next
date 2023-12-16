@@ -9,9 +9,21 @@ export const getArticleCommentsAction = async (articleId: number) => {
   return await prisma.articleComment.findMany({
     where: {
       articleId,
+      repliedToId: null,
     },
     include: {
       user: true,
+      replies: {
+        orderBy: {
+          id: "desc",
+        },
+        include: {
+          user: true,
+        },
+      },
+    },
+    orderBy: {
+      id: "desc",
     },
   });
 };
@@ -19,9 +31,11 @@ export const getArticleCommentsAction = async (articleId: number) => {
 export const createCommentAction = async ({
   comment,
   articleId,
+  repliedToId,
 }: {
   comment: string;
   articleId: number;
+  repliedToId?: number;
 }) => {
   const session = await getServerSession(authOptions);
 
@@ -36,6 +50,7 @@ export const createCommentAction = async ({
       body: comment,
       userId,
       articleId: +articleId,
+      repliedToId,
     },
   });
 
@@ -54,7 +69,14 @@ export const deleteCommentAction = async (id: number) => {
   const deleted = await prisma.articleComment.delete({
     where: {
       id,
-      userId,
+      OR: [
+        {
+          userId,
+        },
+        {
+          repliedToId: id,
+        },
+      ],
     },
   });
 

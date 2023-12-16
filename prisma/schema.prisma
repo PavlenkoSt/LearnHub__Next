@@ -45,13 +45,15 @@ model ArticleCategory {
 }
 
 model ArticleComment {
-  id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [userId], references: [id])
+  id          Int              @id @default(autoincrement())
+  user        User             @relation(fields: [userId], references: [id])
   body        String
   userId      Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  repliedTo   ArticleComment?  @relation("Replies", fields: [repliedToId], references: [id])
   repliedToId Int?
-  Article     Article  @relation(fields: [articleId], references: [id])
+  replies     ArticleComment[] @relation("Replies")
+  Article     Article          @relation(fields: [articleId], references: [id])
   articleId   Int
 }

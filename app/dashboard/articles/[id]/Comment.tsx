@@ -1,69 +1,47 @@
 import React from "react";
-import Image from "next/image";
-import { MdDelete } from "react-icons/md";
-import { getServerSession } from "next-auth";
-import dayjs from "dayjs";
 import type { ArticleComment, User } from "@prisma/client";
+import { twMerge } from "tailwind-merge";
+import CommentReplyForm from "./CommentReplyForm";
+import CommentReply from "./CommentReply";
+import CommentBody from "./CommentBody";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/next-auth.options";
-import { getImageSrc } from "@/app/_utilts/getImageSrc";
-import Btn from "@/app/_components/UI/Btn";
-import { deleteCommentAction } from "@/app/_server-actions/articleComments";
+
+type CommentType = ArticleComment & { user: User };
 
 interface IProps {
-  comment: ArticleComment & { user: User };
+  comment: CommentType & { replies: CommentType[] };
 }
 
 export default async function Comment({ comment }: IProps) {
   const session = await getServerSession(authOptions);
 
-  const { user } = comment;
-
-  const isOwner = session?.user.id === user.id;
-
-  const userName =
-    user.firstName && user.lastName
-      ? `${user.firstName} ${user.lastName}`
-      : "Noname";
-
-  const date = dayjs(comment.updatedAt || comment.createdAt).format(
-    "DD/MM/YYYY HH:mm:ss",
-  );
-
-  const onDelete = async () => {
-    "use server";
-    await deleteCommentAction(comment.id);
-  };
+  const isOwner = session?.user.id === comment.userId;
 
   return (
-    <div className="mb-3 rounded-md border-[1px] border-gray-400 bg-white px-2 py-2 pb-3">
-      <div className="mb-[5px] flex items-center justify-between gap-2">
-        <div className="mb-[5px] flex items-center gap-2">
-          <Image
-            src={getImageSrc(user.image) || "/Avatar.svg"}
-            width={30}
-            height={30}
-            alt="avatar"
-            className="overflow-hidden rounded-full border-[2px] border-gray-400"
-          />
-          <div className="font-medium text-secondary">{userName}</div>
+    <div
+      className={twMerge(
+        "mb-3 rounded-md border-[1px] border-gray-400 bg-white px-2 py-2 pb-3",
+        isOwner && "bg-primary-50",
+      )}
+    >
+      <CommentBody comment={comment} />
+      <CommentReplyForm
+        commentId={comment.id}
+        articleId={comment.articleId}
+        isOwner={isOwner}
+      />
+      {!!comment.replies.length && (
+        <div className="mt-4">
+          {comment.replies.map((reply) => (
+            <CommentReply
+              key={reply.id}
+              comment={reply}
+              isOwner={session?.user.id === reply.userId}
+            />
+          ))}
         </div>
-        <div>
-          {isOwner && (
-            <form action={onDelete}>
-              <Btn type="submit" isIconOnly size="sm" color="danger">
-                <MdDelete size={20} />
-              </Btn>
-            </form>
-          )}
-        </div>
-      </div>
-      <div>{comment.body}</div>
-      <div className="text-end text-sm text-secondary">
-        {comment.updatedAt &&
-        dayjs(comment.updatedAt).diff(comment.createdAt) !== 0
-          ? `${date} Updated`
-          : date}
-      </div>
+      )}
     </div>
   );
 }

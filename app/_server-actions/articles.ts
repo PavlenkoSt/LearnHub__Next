@@ -159,7 +159,7 @@ export const getFilteredArticlesWithCountAction = async ({
   return await prisma.$transaction([
     prisma.article.findMany({
       take: pageSize,
-      skip: (page - 1) * pageSize,
+      skip: Math.max(page - 1, 0) * pageSize,
       orderBy: {
         id: "desc",
       },

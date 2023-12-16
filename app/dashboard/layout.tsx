@@ -21,7 +21,7 @@ export default function Layout({ children }: IProps) {
           <HeaderSearch />
           <HeaderSignOut />
         </div>
-        <div className="px-3">{children}</div>
+        <div className="px-1 sm:px-3">{children}</div>
       </div>
       <div className="visible md:hidden">
         <NavBarMobile />

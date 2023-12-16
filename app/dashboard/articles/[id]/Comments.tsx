@@ -11,14 +11,16 @@ export default async function Comments({ articleId }: IProps) {
   const comments = await getArticleCommentsAction(articleId);
 
   return (
-    <div className="px-2 py-4">
+    <div className="py-4">
       <h3 className="mb-4 font-bold text-secondary">
         Comments {comments.length}
       </h3>
+      <div className="mb-4">
+        <CommentForm articleId={articleId} />
+      </div>
       {comments.map((comment) => (
         <Comment key={comment.id} comment={comment} />
       ))}
-      <CommentForm articleId={articleId} />
     </div>
   );
 }
