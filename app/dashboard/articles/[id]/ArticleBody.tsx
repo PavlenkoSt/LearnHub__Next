@@ -2,9 +2,11 @@
 
 import React from "react";
 import DOMPurify from "dompurify";
-import ReactQuill from "react-quill";
+import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import styles from "@/app/_styles/quill-readonly.override.module.css";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 interface IProps {
   body: string;
