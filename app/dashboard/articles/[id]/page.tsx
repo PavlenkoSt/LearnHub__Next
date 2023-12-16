@@ -72,7 +72,9 @@ export default async function Article({ params }: IProps) {
           </div>
         </div>
         {!article.body ? (
-          <div className="my-4 text-center text-secondary">Empty body</div>
+          <div className="my-4 text-center italic text-secondary">
+            Empty body
+          </div>
         ) : (
           <ArticleBody body={article.body} />
         )}

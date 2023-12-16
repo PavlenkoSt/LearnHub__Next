@@ -2,12 +2,12 @@ import React from "react";
 import Image from "next/image";
 import { MdDelete } from "react-icons/md";
 import { getServerSession } from "next-auth";
+import dayjs from "dayjs";
 import type { ArticleComment, User } from "@prisma/client";
 import { authOptions } from "@/next-auth.options";
 import { getImageSrc } from "@/app/_utilts/getImageSrc";
 import Btn from "@/app/_components/UI/Btn";
 import { deleteCommentAction } from "@/app/_server-actions/articleComments";
-import toast from "react-hot-toast";
 
 interface IProps {
   comment: ArticleComment & { user: User };
@@ -24,6 +24,10 @@ export default async function Comment({ comment }: IProps) {
     user.firstName && user.lastName
       ? `${user.firstName} ${user.lastName}`
       : "Noname";
+
+  const date = dayjs(comment.updatedAt || comment.createdAt).format(
+    "DD/MM/YYYY HH:mm:ss",
+  );
 
   const onDelete = async () => {
     "use server";
@@ -54,6 +58,12 @@ export default async function Comment({ comment }: IProps) {
         </div>
       </div>
       <div>{comment.body}</div>
+      <div className="text-end text-sm text-secondary">
+        {comment.updatedAt &&
+        dayjs(comment.updatedAt).diff(comment.createdAt) !== 0
+          ? `${date} Updated`
+          : date}
+      </div>
     </div>
   );
 }
