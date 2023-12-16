@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import styles from "@/app/_styles/quill-readonly.override.module.css";
