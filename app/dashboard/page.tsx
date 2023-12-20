@@ -21,9 +21,9 @@ export default function Dashboard() {
               Welcome to <span className="font-bold text-active">LearnHub</span>
             </h1>
             <h2 className="text-center text-lg sm:px-8 md:px-0 md:text-left">
-              Your personalized dashboard awaits, filled with courses,
-              resources, and tools to help you reach your full potential.
-              Let&apos;s make every click count. Happy learning! 📚🚀
+              Your personalized dashboard awaits, filled with resources to help
+              you reach your full potential. Let&apos;s make every click count.
+              Happy learning! 📚🚀
             </h2>
           </div>
         </div>
