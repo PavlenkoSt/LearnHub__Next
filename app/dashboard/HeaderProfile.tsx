@@ -11,7 +11,7 @@ export default async function HeaderProfile() {
   return (
     <Link href="/dashboard/profile" className="header-btn overflow-hidden">
       <Image
-        src={getImageSrc(session?.user?.image) || "/avatar.svg"}
+        src={getImageSrc(session?.user?.image) || "/Avatar.svg"}
         alt="Avatar"
         width={25}
         height={25}
