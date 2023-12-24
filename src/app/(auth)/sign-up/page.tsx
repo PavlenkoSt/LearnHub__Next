@@ -2,14 +2,14 @@
 
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import Link from "next/link";
 import * as yup from "yup";
-import Btn from "@/src/app/_components/UI/Btn";
-import Input from "@/src/app/_components/UI/Input";
-import { createUserAction } from "@/src/app/_server-actions/user";
+import Btn from "@/src/shared/UI/Btn";
+import Input from "@/src/shared/UI/Input";
+import { createUserAction } from "@/src/entities/actions/user";
 
 interface IForm {
   email: string;

@@ -1,16 +1,15 @@
+import React from "react";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Toaster } from "react-hot-toast";
-import Image from "next/image";
-import React from "react";
 import { authOptions } from "@/next-auth.options";
-import { getArticleByIdAction } from "@/src/app/_server-actions/articles";
-import BreadcrumbsComponent from "@/src/app/_components/UI/Breadcrumbs";
-import PageContainer from "@/src/app/_components/PageContainer";
-import { getImageSrc } from "@/src/app/_utilts/getImageSrc";
-import Actions from "./Actions";
-import ArticleBody from "./ArticleBody";
-import Comments from "./Comments";
+import BreadcrumbsComponent from "@/src/shared/UI/Breadcrumbs";
+import PageContainer from "@/src/shared/components/PageContainer";
+import { getArticleByIdAction } from "@/src/entities/actions/articles";
+import ArticleActions from "@/src/widgets/article/ArticleActions";
+import ArticleBody from "@/src//widgets/article/ArticleBody";
+import ArticleHead from "@/src/widgets/article/ArticleHead";
+import Comments from "@/src//widgets/comment/Comments";
 
 interface IProps {
   params: {
@@ -42,35 +41,10 @@ export default async function Article({ params }: IProps) {
             },
           ]}
         />
-        {isOwner && <Actions article={article} />}
+        {isOwner && <ArticleActions article={article} />}
       </div>
       <div>
-        <div className="flex flex-col gap-2 md:flex-row">
-          <div className="w-full overflow-hidden rounded-lg md:w-[300px]">
-            <Image
-              width={1000}
-              height={1000}
-              alt="Article"
-              className="object-cover"
-              src={
-                article.pictureUrl
-                  ? (getImageSrc(article.pictureUrl) as string)
-                  : "/placeholder.jpg"
-              }
-            />
-          </div>
-          <div>
-            <h1 className="flex items-start gap-1 text-3xl font-bold text-primary">
-              {article.name}
-              {!!article.category && (
-                <span className="rounded-full bg-primary px-2 py-1 text-sm text-white">
-                  {article.category.name}
-                </span>
-              )}
-            </h1>
-            <h2 className="text-secondary">{article.description}</h2>
-          </div>
-        </div>
+        <ArticleHead article={article} />
         {!article.body ? (
           <div className="my-4 text-center italic text-secondary">
             Empty body

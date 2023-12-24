@@ -1,14 +1,17 @@
 import React from "react";
 import { redirect } from "next/navigation";
-import { getFilteredArticlesWithCountAction } from "@/src/app/_server-actions/articles";
-import { getCategoriesAction } from "@/src/app/_server-actions/categories";
-import Pagination from "@/src/app/_components/UI/Pagination";
-import { ArticleFilterEnum, ISearchParams } from "./types";
-import Header from "./Header";
-import ArticleCard from "./ArticleCard";
+import Pagination from "@/src/shared/UI/Pagination";
+import { getFilteredArticlesWithCountAction } from "@/src/entities/actions/articles";
+import { getCategoriesAction } from "@/src/entities/actions/categories";
+import {
+  ArticleFilterEnum,
+  IArticleSearchParams,
+} from "@/src/entities/types/ArticleQueries";
+import ArticleCard from "@/src/features/article/ArticleCard";
+import ArticleQueriesHeader from "@/src/widgets/article/ArticleQueriesHeader";
 
 interface IProps {
-  searchParams: ISearchParams;
+  searchParams: IArticleSearchParams;
 }
 
 const pageSize = 12;
@@ -45,7 +48,7 @@ export default async function Articles({ searchParams }: IProps) {
 
   return (
     <div>
-      <Header search={search} categories={categories} />
+      <ArticleQueriesHeader search={search} categories={categories} />
       <div className="md:px-2">
         {articles.length ? (
           <div>

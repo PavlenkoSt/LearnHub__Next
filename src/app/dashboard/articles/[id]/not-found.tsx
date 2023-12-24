@@ -1,6 +1,6 @@
 import React from "react";
-import PageContainer from "@/src/app/_components/PageContainer";
-import BreadcrumbsComponent from "@/src/app/_components/UI/Breadcrumbs";
+import PageContainer from "@/src/shared/components/PageContainer";
+import BreadcrumbsComponent from "@/src/shared/UI/Breadcrumbs";
 
 export default function NotFound() {
   return (

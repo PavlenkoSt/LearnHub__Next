@@ -1,10 +1,10 @@
 import React from "react";
-import PageContainer from "@/src/app/_components/PageContainer";
-import BreadcrumbsComponent from "@/src/app/_components/UI/Breadcrumbs";
-import ArticleForm from "@/src/app/_components/ArticleForm";
-import { getCategoriesAction } from "@/src/app/_server-actions/categories";
+import PageContainer from "@/src/shared/components/PageContainer";
+import BreadcrumbsComponent from "@/src/shared/UI/Breadcrumbs";
+import { getCategoriesAction } from "@/src/entities/actions/categories";
+import CreateArticle from "@/src/widgets/article/CreateArticle";
 
-export default async function CreateArticle() {
+export default async function CreateArticlePage() {
   const categories = await getCategoriesAction();
 
   return (
@@ -18,12 +18,7 @@ export default async function CreateArticle() {
           ]}
         />
       </div>
-      <div className="flex flex-col items-center justify-center">
-        <h2 className="mb-6 mt-6 text-center text-xl font-semibold text-primary md:mb-8 md:mt-2">
-          Create article
-        </h2>
-        <ArticleForm categories={categories} />
-      </div>
+      <CreateArticle categories={categories} />
     </PageContainer>
   );
 }

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import PageContainer from "../_components/PageContainer";
+import PageContainer from "@/src/shared/components/PageContainer";
 
 export default function Dashboard() {
   return (

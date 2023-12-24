@@ -7,8 +7,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import * as yup from "yup";
 import Link from "next/link";
-import Btn from "@/src/app/_components/UI/Btn";
-import Input from "@/src/app/_components/UI/Input";
+import Btn from "@/src/shared/UI/Btn";
+import Input from "@/src/shared/UI/Input";
 
 interface IForm {
   email: string;

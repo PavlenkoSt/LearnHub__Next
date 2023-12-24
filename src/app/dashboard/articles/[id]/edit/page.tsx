@@ -1,12 +1,12 @@
 import React from "react";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { getArticleByIdAction } from "@/src/app/_server-actions/articles";
-import PageContainer from "@/src/app/_components/PageContainer";
-import BreadcrumbsComponent from "@/src/app/_components/UI/Breadcrumbs";
 import { authOptions } from "@/next-auth.options";
-import ArticleForm from "@/src/app/_components/ArticleForm";
-import { getCategoriesAction } from "@/src/app/_server-actions/categories";
+import PageContainer from "@/src/shared/components/PageContainer";
+import BreadcrumbsComponent from "@/src/shared/UI/Breadcrumbs";
+import { getCategoriesAction } from "@/src/entities/actions/categories";
+import { getArticleByIdAction } from "@/src/entities/actions/articles";
+import UpdateArticle from "@/src/widgets/article/UpdateArticle";
 
 interface IProps {
   params: {
@@ -46,12 +46,7 @@ export default async function Edit({ params }: IProps) {
           ]}
         />
       </div>
-      <div className="mb-6 flex flex-col items-center justify-center">
-        <h2 className="mb-6 mt-6 text-center text-xl font-semibold text-primary md:mb-8 md:mt-2">
-          Update article &ldquo;{article.name}&ldquo;
-        </h2>
-        <ArticleForm article={article} categories={categories} />
-      </div>
+      <UpdateArticle article={article} categories={categories} />
     </PageContainer>
   );
 }
