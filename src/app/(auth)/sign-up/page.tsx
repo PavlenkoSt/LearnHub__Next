@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -33,7 +33,7 @@ const validationSchema = yup.object({
 });
 
 export default function SignUp() {
-  const [loading, setLoading] = useState(false);
+  const [loading, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
@@ -55,35 +55,35 @@ export default function SignUp() {
   }) => {
     if (loading) return;
 
-    try {
-      setLoading(true);
-      setErrorMessage("");
+    startTransition(async () => {
+      try {
+        setErrorMessage("");
 
-      if (password !== repeatedPassword) {
-        throw new Error("Passwords not match");
+        if (password !== repeatedPassword) {
+          throw new Error("Passwords not match");
+        }
+
+        await createUserAction({
+          email,
+          password,
+        });
+
+        const signInResult = await signIn("login", {
+          email,
+          password,
+          redirect: false,
+          callbackUrl: "",
+        });
+
+        if (!signInResult?.ok)
+          throw new Error(signInResult?.error || "Something went wrong");
+
+        router.replace(searchParams.get("callbackUrl") || "/dashboard");
+      } catch (e: any) {
+        console.log("e", e);
+        setErrorMessage(e?.message || "Something went wrong");
       }
-
-      await createUserAction({
-        email,
-        password,
-      });
-
-      const signInResult = await signIn("login", {
-        email,
-        password,
-        redirect: false,
-        callbackUrl: "",
-      });
-
-      if (!signInResult?.ok)
-        throw new Error(signInResult?.error || "Something went wrong");
-
-      router.replace(searchParams.get("callbackUrl") || "/dashboard");
-    } catch (e: any) {
-      console.log("e", e);
-      setLoading(false);
-      setErrorMessage(e?.message || "Something went wrong");
-    }
+    });
   };
 
   return (

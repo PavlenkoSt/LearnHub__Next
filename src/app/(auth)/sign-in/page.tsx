@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -27,7 +27,7 @@ const validationSchema = yup.object({
 });
 
 export default function SignIn() {
-  const [loading, setLoading] = useState(false);
+  const [loading, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
@@ -42,26 +42,26 @@ export default function SignIn() {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit: SubmitHandler<IForm> = async ({ email, password }) => {
+  const onSubmit: SubmitHandler<IForm> = ({ email, password }) => {
     if (loading) return;
 
-    try {
-      setErrorMessage("");
-      setLoading(true);
-      const result = await signIn("login", {
-        email,
-        password,
-        redirect: false,
-        callbackUrl: "",
-      });
+    startTransition(async () => {
+      try {
+        setErrorMessage("");
+        const result = await signIn("login", {
+          email,
+          password,
+          redirect: false,
+          callbackUrl: "",
+        });
 
-      if (!result?.ok) throw new Error("Invalid credentials");
+        if (!result?.ok) throw new Error("Invalid credentials");
 
-      router.replace(searchParams.get("callbackUrl") || "/dashboard");
-    } catch (e: any) {
-      setLoading(false);
-      setErrorMessage(e?.message || "Something went wrong");
-    }
+        router.replace(searchParams.get("callbackUrl") || "/dashboard");
+      } catch (e: any) {
+        setErrorMessage(e?.message || "Something went wrong");
+      }
+    });
   };
 
   useEffect(() => {

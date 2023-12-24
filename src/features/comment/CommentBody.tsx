@@ -5,9 +5,9 @@ import dayjs from "dayjs";
 import { getServerSession } from "next-auth";
 import type { ArticleComment, User } from "@prisma/client";
 import { authOptions } from "@/next-auth.options";
-import { deleteCommentAction } from "@/src/entities/actions/articleComments";
 import Btn from "@/src/shared/UI/Btn";
 import { getImageSrc } from "@/src/shared/utilts/getImageSrc";
+import { deleteCommentAction } from "@/src/entities/actions/articleComments";
 import CommentReplyAction from "./CommentReplyAction";
 
 interface IProps {
