@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useTransition } from "react";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import type { Article } from "@prisma/client";
 import { deleteArticleAction } from "@/src/entities/actions/articles";
 import Confirm from "@/src/shared/UI/Confirm";
@@ -13,16 +14,19 @@ interface IProps {
 
 export default function ActionDeleteArticle({ article }: IProps) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, startTransition] = useTransition();
 
   const deleteArticle = async () => {
-    try {
-      setLoading(true);
-      await deleteArticleAction(article.id);
-      router.replace("/dashboard/articles");
-    } finally {
-      setLoading(false);
-    }
+    if (loading) return;
+
+    startTransition(async () => {
+      try {
+        await deleteArticleAction(article.id);
+        router.replace("/dashboard/articles");
+      } catch (e: any) {
+        toast.error(e?.message || "Something went wrong");
+      }
+    });
   };
 
   return (

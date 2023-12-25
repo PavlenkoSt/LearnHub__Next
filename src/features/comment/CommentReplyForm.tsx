@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useTransition } from "react";
 import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
@@ -34,7 +34,7 @@ export default function CommentReplyForm({
   commentId,
   isOwner,
 }: IProps) {
-  const [loading, setLoading] = useState(false);
+  const [loading, startTransition] = useTransition();
 
   const isActive = useCommentReplyToActive(commentId);
 
@@ -50,20 +50,21 @@ export default function CommentReplyForm({
   const comment = watch("comment");
 
   const onSubmit = async (form: IForm) => {
-    try {
-      setLoading(true);
-      await createCommentAction({
-        comment: form.comment,
-        articleId,
-        repliedToId: commentId,
-      });
-      onCancel();
-      toast.success("Reply added");
-    } catch (e: any) {
-      toast.error(e.message);
-    } finally {
-      setLoading(false);
-    }
+    if (loading) return;
+
+    startTransition(async () => {
+      try {
+        await createCommentAction({
+          comment: form.comment,
+          articleId,
+          repliedToId: commentId,
+        });
+        onCancel();
+        toast.success("Reply added");
+      } catch (e: any) {
+        toast.error(e.message);
+      }
+    });
   };
 
   const onCancel = () => {

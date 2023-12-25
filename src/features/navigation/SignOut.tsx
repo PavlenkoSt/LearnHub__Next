@@ -1,31 +1,35 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { PiSignOut } from "react-icons/pi";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import ModalWrapper from "@/src/shared/UI/ModalWrapper";
 import Btn from "@/src/shared/UI/Btn";
+import toast from "react-hot-toast";
 
 export default function SignOut() {
   const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, startTransition] = useTransition();
 
   const router = useRouter();
   const session = useSession();
 
   const onClick = async () => {
-    try {
-      setLoading(true);
-      await signOut({
-        redirect: false,
-      });
-      await session.update(null);
-      router.replace("/sign-in");
-      router.refresh();
-    } catch (e) {
-      setLoading(false);
-    }
+    if (loading) return;
+
+    startTransition(async () => {
+      try {
+        await signOut({
+          redirect: false,
+        });
+        await session.update(null);
+        router.replace("/sign-in");
+        router.refresh();
+      } catch (e: any) {
+        toast.error(e?.message || "Something went wrong");
+      }
+    });
   };
 
   return (

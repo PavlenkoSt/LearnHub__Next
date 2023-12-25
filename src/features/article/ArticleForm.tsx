@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -54,7 +54,7 @@ export default function ArticleForm({ article, categories }: IProps) {
   );
   const [body, setBody] = useState(() => article?.body || "");
   const [picture, setPicture] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, startTransition] = useTransition();
 
   const router = useRouter();
 
@@ -75,40 +75,41 @@ export default function ArticleForm({ article, categories }: IProps) {
     description,
     category,
   }) => {
-    try {
-      setLoading(true);
+    if (loading) return;
 
-      const formData = new FormData();
+    startTransition(async () => {
+      try {
+        const formData = new FormData();
 
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("body", body);
+        formData.append("name", name);
+        formData.append("description", description);
+        formData.append("body", body);
 
-      if (picture) formData.append("picture", picture);
+        if (picture) formData.append("picture", picture);
 
-      if (category) {
-        const existCategory = categories.find(
-          (cat) => cat.name.toLowerCase() === category.toLowerCase(),
-        );
+        if (category) {
+          const existCategory = categories.find(
+            (cat) => cat.name.toLowerCase() === category.toLowerCase(),
+          );
 
-        if (existCategory) {
-          formData.append("categoryId", existCategory.id.toString());
-        } else {
-          const createdCategory = await createCategoryAction(category);
-          formData.append("categoryId", createdCategory.id.toString());
+          if (existCategory) {
+            formData.append("categoryId", existCategory.id.toString());
+          } else {
+            const createdCategory = await createCategoryAction(category);
+            formData.append("categoryId", createdCategory.id.toString());
+          }
         }
+
+        const resultArticle = article
+          ? await updateArticleAction(formData, article.id)
+          : await createArticleAction(formData);
+
+        router.push("/dashboard/articles/" + resultArticle.id);
+      } catch (e: any) {
+        console.log("e", e);
+        toast.error(e.message || "Something went wrong");
       }
-
-      const resultArticle = article
-        ? await updateArticleAction(formData, article.id)
-        : await createArticleAction(formData);
-
-      router.push("/dashboard/articles/" + resultArticle.id);
-    } catch (e: any) {
-      console.log("e", e);
-      toast.error(e.message || "Something went wrong");
-      setLoading(false);
-    }
+    });
   };
 
   const onPickImage = () => {

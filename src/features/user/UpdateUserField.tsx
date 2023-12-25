@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useTransition } from "react";
 import { twMerge } from "tailwind-merge";
 import { Spinner } from "@nextui-org/react";
 import { MdEdit } from "react-icons/md";
@@ -45,6 +45,8 @@ export default function UpdateUserField({
   const pathname = usePathname();
   const session = useSession();
 
+  const [loading, startTransition] = useTransition();
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
       [fieldName]: fieldValue,
@@ -65,8 +67,6 @@ export default function UpdateUserField({
 
   const isFormActive = searchParams.get("activeForm") === formName;
 
-  const [loading, setLoading] = useState(false);
-
   const onActivateForm = () => {
     const params = new URLSearchParams();
     params.set("activeForm", formName);
@@ -74,37 +74,37 @@ export default function UpdateUserField({
   };
 
   const onSubmit: SubmitHandler<IForm> = async (data) => {
-    try {
-      if (!session.data?.user) {
-        throw new Error("No user is found");
+    if (loading) return;
+
+    startTransition(async () => {
+      try {
+        if (!session.data?.user) {
+          throw new Error("No user is found");
+        }
+
+        const field = data[fieldName];
+
+        if (!field) {
+          throw new Error("No value is found");
+        }
+
+        const user = await updateUserInfoAction({
+          id: session.data.user.id,
+          updateDto: {
+            [fieldName]: field,
+          },
+        });
+
+        await session.update({
+          ...session,
+          user,
+        });
+        router.replace(pathname);
+        router.refresh();
+      } catch (e: any) {
+        toast.error(e.message || "Something went wrong");
       }
-
-      const field = data[fieldName];
-
-      setLoading(true);
-
-      if (!field) {
-        throw new Error("No value is found");
-      }
-
-      const user = await updateUserInfoAction({
-        id: session.data.user.id,
-        updateDto: {
-          [fieldName]: field,
-        },
-      });
-
-      await session.update({
-        ...session,
-        user,
-      });
-      router.replace(pathname);
-      router.refresh();
-    } catch (e: any) {
-      toast.error(e.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   return (

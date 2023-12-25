@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as yup from "yup";
@@ -25,19 +25,20 @@ const validationSchema = yup.object({
 });
 
 export default function CommentForm({ articleId }: IProps) {
-  const [loading, setLoading] = useState(false);
+  const [loading, startTransition] = useTransition();
 
   const onSubmit = async (form: IForm) => {
-    try {
-      setLoading(true);
-      await createCommentAction({ comment: form.comment, articleId });
-      reset();
-      toast.success("Comment added");
-    } catch (e: any) {
-      toast.error(e.message);
-    } finally {
-      setLoading(false);
-    }
+    if (loading) return;
+
+    startTransition(async () => {
+      try {
+        await createCommentAction({ comment: form.comment, articleId });
+        reset();
+        toast.success("Comment added");
+      } catch (e: any) {
+        toast.error(e.message);
+      }
+    });
   };
 
   const { control, handleSubmit, reset, watch } = useForm({
