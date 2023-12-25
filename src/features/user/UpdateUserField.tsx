@@ -110,7 +110,7 @@ export default function UpdateUserField({
   return (
     <form
       className={twMerge(
-        "flex flex-col items-center gap-1 border-b-[1px] border-primary bg-white px-2 md:h-[80px] md:flex-row md:px-6",
+        "border-light flex flex-col items-center gap-1 border-b-[1px] bg-white px-2 md:h-[80px] md:flex-row md:px-6",
         isLast && "border-0",
       )}
       onSubmit={handleSubmit(onSubmit)}

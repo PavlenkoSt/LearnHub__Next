@@ -25,6 +25,7 @@ const config: Config = {
         primary: "var(--primary-bg)",
         "selected-dark": "var(--selected-dark-bg)",
         "selected-light": "var(--selected-light-bg)",
+        light: "var(--border-light-color)",
       },
       outlineColor: {
         "selected-dark": "var(--selected-dark-bg)",

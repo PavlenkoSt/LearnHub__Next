@@ -2,6 +2,7 @@ import React from "react";
 import { IUser } from "@/src/entities/types/User";
 import { UserFieldEnum } from "@/src/entities/types/UserFieldEnum";
 import UpdateUserField from "@/src/features/user/UpdateUserField";
+import { Card } from "@nextui-org/react";
 
 interface IProps {
   user?: IUser;
@@ -20,7 +21,7 @@ export default function UserFields({ user }: IProps) {
           <h2 className="mb-3 text-center text-xl font-medium">
             Personal Information
           </h2>
-          <div className="rounded-sm border-[1px] border-primary">
+          <Card className="border-light border-[1px]">
             <UpdateUserField
               label="First name"
               fieldName="firstName"
@@ -44,7 +45,7 @@ export default function UserFields({ user }: IProps) {
               isEmail
               isLast
             />
-          </div>
+          </Card>
         </div>
       </div>
     </div>
