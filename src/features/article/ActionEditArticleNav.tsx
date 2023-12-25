@@ -2,15 +2,22 @@
 
 import React from "react";
 import { FaEdit } from "react-icons/fa";
-import { usePathname, useRouter } from "next/navigation";
 import Btn from "@/src/shared/UI/Btn";
+import useNextRouter from "@/src/shared/hooks/useNextRouter";
 
-export default function ActionEditArticleNav() {
-  const router = useRouter();
-  const pathname = usePathname();
+interface IProps {
+  articleId: number;
+}
+
+export default function ActionEditArticleNav({ articleId }: IProps) {
+  const router = useNextRouter();
 
   return (
-    <Btn isIconOnly onPress={() => router.push(pathname + "/edit")} size="sm">
+    <Btn
+      isIconOnly
+      onPress={() => router.push(`/dashboard/articles/${articleId}/edit`)}
+      size="sm"
+    >
       <FaEdit size={20} />
     </Btn>
   );

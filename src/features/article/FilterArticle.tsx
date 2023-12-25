@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 import SelectComponent from "@/src/shared/UI/Select";
 import { ArticleFilterEnum } from "@/src/entities/types/ArticleQueries";

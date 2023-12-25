@@ -5,10 +5,10 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import Link from "next/link";
 import * as yup from "yup";
 import Btn from "@/src/shared/UI/Btn";
 import Input from "@/src/shared/UI/Input";
+import NextLink from "@/src/shared/UI/NextLink";
 import { createUserAction } from "@/src/entities/actions/user";
 
 interface IForm {
@@ -148,12 +148,12 @@ export default function SignUp() {
         <Btn type="submit" isLoading={loading}>
           Sign Up
         </Btn>
-        <Link
+        <NextLink
           href="/sign-in"
           className="text-sm font-medium text-active transition-all hover:text-sky-700"
         >
           Already have an account?
-        </Link>
+        </NextLink>
       </div>
     </form>
   );

@@ -2,7 +2,6 @@
 
 import React, { FormEvent, useState, useTransition } from "react";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import * as yup from "yup";
@@ -15,6 +14,7 @@ import { getImageSrc } from "@/src/shared/utilts/getImageSrc";
 import Btn from "@/src/shared/UI/Btn";
 import Input from "@/src/shared/UI/Input";
 import TextArea from "@/src/shared/UI/TextArea";
+import useNextRouter from "@/src/shared/hooks/useNextRouter";
 import AutocompleteComponent from "@/src/shared/UI/Autocomplete";
 import {
   createArticleAction,
@@ -56,7 +56,7 @@ export default function ArticleForm({ article, categories }: IProps) {
   const [picture, setPicture] = useState<File | null>(null);
   const [loading, startTransition] = useTransition();
 
-  const router = useRouter();
+  const router = useNextRouter();
 
   const imagePickerState = useImagePickerState();
   const imgPreview = useImagePreview(picture);

@@ -10,7 +10,7 @@ interface IProps {
 export default function ArticleActions({ article }: IProps) {
   return (
     <div className="flex items-center justify-center gap-2">
-      <ActionEditArticleNav />
+      <ActionEditArticleNav articleId={article.id} />
       <ActionDeleteArticle article={article} />
     </div>
   );

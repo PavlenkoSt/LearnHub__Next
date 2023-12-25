@@ -1,8 +1,7 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import InputComponent from "@/src/shared/UI/Input";
 import { debounce } from "@/src/shared/utilts/debounce";
 

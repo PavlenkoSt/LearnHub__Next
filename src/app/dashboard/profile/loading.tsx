@@ -19,7 +19,7 @@ function SkeletonItem() {
 export default function Loading() {
   return (
     <PageContainer>
-      <div className="mb-4 flex flex-col items-center justify-center md:-mt-5">
+      <div className="mb-4 mt-4 flex flex-col items-center justify-center">
         <Skeleton className="mb-6 h-[140px] w-[140px] rounded-full" />
         <Skeleton className="w-60 rounded-lg">
           <div className="h-6 rounded-lg bg-default-200"></div>

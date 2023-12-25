@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { useRouter } from "next/navigation";
 import type { ArticleCategory } from "@prisma/client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import SelectComponent from "@/src/shared/UI/Select";
 
 interface IProps {

@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { IconType } from "react-icons";
 import { twMerge } from "tailwind-merge";
+import NextLink from "@/src/shared/UI/NextLink";
 
 interface IProps {
   nav: {
@@ -17,7 +17,7 @@ export default function NavLinkDesktop({ nav, isCollapsed }: IProps) {
   const pathname = usePathname();
 
   return (
-    <Link
+    <NextLink
       key={nav.path}
       href={nav.path}
       className={twMerge(
@@ -36,6 +36,6 @@ export default function NavLinkDesktop({ nav, isCollapsed }: IProps) {
       >
         {nav.name}
       </div>
-    </Link>
+    </NextLink>
   );
 }

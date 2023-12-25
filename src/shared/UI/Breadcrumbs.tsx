@@ -2,8 +2,8 @@
 
 import React from "react";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import NextLink from "./NextLink";
 
 export interface IBreadcrumb {
   name: string;
@@ -26,7 +26,7 @@ export default function BreadcrumbsComponent({ links }: IProps) {
           link.pressable === false ? (
             link.name
           ) : (
-            <Link href={link.href}>{link.name}</Link>
+            <NextLink href={link.href}>{link.name}</NextLink>
           )}
         </BreadcrumbItem>
       ))}

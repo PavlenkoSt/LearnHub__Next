@@ -9,6 +9,7 @@ import {
 } from "@/src/entities/types/ArticleQueries";
 import ArticleCard from "@/src/features/article/ArticleCard";
 import ArticleQueriesHeader from "@/src/widgets/article/ArticleQueriesHeader";
+import PageContainer from "@/src/shared/components/PageContainer";
 
 interface IProps {
   searchParams: IArticleSearchParams;
@@ -47,9 +48,9 @@ export default async function Articles({ searchParams }: IProps) {
   }
 
   return (
-    <div>
+    <PageContainer full>
       <ArticleQueriesHeader search={search} categories={categories} />
-      <div className="md:px-2">
+      <div className="pt-2 md:pt-0">
         {articles.length ? (
           <div>
             <div className="mb-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -69,6 +70,6 @@ export default async function Articles({ searchParams }: IProps) {
           </div>
         )}
       </div>
-    </div>
+    </PageContainer>
   );
 }

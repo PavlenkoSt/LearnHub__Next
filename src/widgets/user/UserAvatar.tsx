@@ -10,7 +10,7 @@ interface IProps {
 
 export default function UserAvatar({ user }: IProps) {
   return (
-    <div className="flex items-center justify-center md:-mt-5">
+    <div className="flex items-center justify-center pt-4">
       <UploadAvatar>
         <Avatar
           src={getImageSrc(user?.image) || "/Avatar.svg"}

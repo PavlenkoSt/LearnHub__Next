@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { PiSignOut } from "react-icons/pi";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { PiSignOut } from "react-icons/pi";
+import toast from "react-hot-toast";
 import ModalWrapper from "@/src/shared/UI/ModalWrapper";
 import Btn from "@/src/shared/UI/Btn";
-import toast from "react-hot-toast";
 
 export default function SignOut() {
   const [visible, setVisible] = useState(false);

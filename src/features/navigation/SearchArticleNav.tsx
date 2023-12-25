@@ -3,8 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
-import { useRouter } from "next/navigation";
 import ModalWrapper from "@/src/shared/UI/ModalWrapper";
+import useNextRouter from "@/src/shared/hooks/useNextRouter";
 
 export default function SearchArticleNav() {
   const [visible, setVisible] = useState(false);
@@ -12,7 +12,7 @@ export default function SearchArticleNav() {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const router = useRouter();
+  const router = useNextRouter();
 
   useEffect(() => {
     if (visible) {

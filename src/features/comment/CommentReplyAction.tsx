@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { FaReplyAll } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import Btn from "@/src/shared/UI/Btn";
+import { FaReplyAll } from "react-icons/fa";
 import { useCommentReplyToActive } from "@/src/shared/hooks/useCommentReplyToActive";
+import Btn from "@/src/shared/UI/Btn";
 
 interface IProps {
   commentId: number;

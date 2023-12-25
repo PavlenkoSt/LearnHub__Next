@@ -6,9 +6,9 @@ import { signIn, useSession } from "next-auth/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import * as yup from "yup";
-import Link from "next/link";
 import Btn from "@/src/shared/UI/Btn";
 import Input from "@/src/shared/UI/Input";
+import NextLink from "@/src/shared/UI/NextLink";
 
 interface IForm {
   email: string;
@@ -115,12 +115,12 @@ export default function SignIn() {
         <Btn type="submit" isLoading={loading}>
           Sign In
         </Btn>
-        <Link
+        <NextLink
           href="/sign-up"
           className="text-sm font-medium text-active transition-all hover:text-sky-700"
         >
           You do not have an account?
-        </Link>
+        </NextLink>
       </div>
     </form>
   );

@@ -1,6 +1,6 @@
-import Link from "next/link";
 import React from "react";
 import type { ArticleCategory } from "@prisma/client";
+import NextLink from "@/src/shared/UI/NextLink";
 import BreadcrumbsComponent from "@/src/shared/UI/Breadcrumbs";
 import FilterArticle from "@/src/features/article/FilterArticle";
 import SearchArticle from "@/src/features/article/SearchArticle";
@@ -27,7 +27,7 @@ export default function ArticleQueriesHeader({ search, categories }: IProps) {
   }
 
   return (
-    <header className="md:px-2 md:pt-2">
+    <header className="md:pt-2">
       <BreadcrumbsComponent links={breadcrumbs} />
       <div className="flex flex-col justify-between gap-2 py-2 md:flex-row md:items-center">
         <div className="mb-2 flex flex-1 flex-col items-end gap-2 md:mb-0 md:flex-row md:flex-nowrap md:items-center">
@@ -36,12 +36,12 @@ export default function ArticleQueriesHeader({ search, categories }: IProps) {
           <SearchArticle search={search} />
           <ResetArticleFilters />
         </div>
-        <Link
+        <NextLink
           href="/dashboard/articles/create"
           className="flex w-full items-center justify-center gap-4 rounded-md bg-primary px-4 py-2 text-center text-white transition-all hover:bg-selected-dark md:w-auto"
         >
           + Create article
-        </Link>
+        </NextLink>
       </div>
     </header>
   );

@@ -2,9 +2,9 @@
 
 import React, { useTransition } from "react";
 import * as yup from "yup";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Btn from "@/src/shared/UI/Btn";
 import InputComponent from "@/src/shared/UI/Input";
@@ -95,7 +95,7 @@ export default function CommentReplyForm({
               label="Write your reply"
               errorMessage={fieldState.error?.message}
               isInvalid={!!fieldState.error?.message}
-              autoFocus={false}
+              autoFocus={true}
             />
           )}
         />

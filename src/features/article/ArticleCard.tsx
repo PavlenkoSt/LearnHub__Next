@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import type { Article, ArticleCategory, User } from "@prisma/client";
 import { getImageSrc } from "@/src/shared/utilts/getImageSrc";
+import NextLink from "@/src/shared/UI/NextLink";
 
 interface IProps {
   article: Article & { owner: User; category: ArticleCategory | null };
@@ -13,7 +13,7 @@ export default function ArticleCard({ article }: IProps) {
   const owner = firstName && lastName ? `${firstName} ${lastName}` : "Noname";
 
   return (
-    <Link href={`/dashboard/articles/${article.id}`}>
+    <NextLink href={`/dashboard/articles/${article.id}`}>
       <div className="group flex h-full flex-col overflow-hidden rounded-md border-[1px] border-primary bg-[#fff]">
         <div className="relative flex h-[200px] w-full items-center justify-center overflow-hidden">
           <Image
@@ -46,6 +46,6 @@ export default function ArticleCard({ article }: IProps) {
           </div>
         </div>
       </div>
-    </Link>
+    </NextLink>
   );
 }

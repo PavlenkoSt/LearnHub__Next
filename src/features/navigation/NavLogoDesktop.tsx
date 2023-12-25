@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+import Image from "next/image";
 import { twMerge } from "tailwind-merge";
+import NextLink from "@/src/shared/UI/NextLink";
 
 interface IProps {
   isCollapsed: boolean;
@@ -9,7 +9,7 @@ interface IProps {
 
 export default function NavLogoDesktop({ isCollapsed }: IProps) {
   return (
-    <Link
+    <NextLink
       href="/dashboard"
       className={twMerge(
         "group flex items-center gap-3 overflow-hidden px-3 transition-all",
@@ -32,6 +32,6 @@ export default function NavLogoDesktop({ isCollapsed }: IProps) {
       >
         LearnHub
       </div>
-    </Link>
+    </NextLink>
   );
 }

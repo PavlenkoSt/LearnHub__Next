@@ -3,7 +3,7 @@
 import React, { ReactNode } from "react";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import useNextRouter from "@/src/shared/hooks/useNextRouter";
 import ImagePicker, { useImagePickerState } from "@/src/shared/UI/ImagePicker";
 import { updateUserAvatarAction } from "@/src/entities/actions/user";
 
@@ -13,7 +13,7 @@ interface IProps {
 
 export default function UploadAvatar({ children }: IProps) {
   const session = useSession();
-  const router = useRouter();
+  const router = useNextRouter();
 
   const state = useImagePickerState();
 

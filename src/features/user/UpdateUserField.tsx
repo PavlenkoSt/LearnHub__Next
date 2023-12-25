@@ -9,8 +9,8 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import * as yup from "yup";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import * as yup from "yup";
 import Input from "@/src/shared/UI/Input";
 import { UserFieldEnum } from "@/src/entities/types/UserFieldEnum";
 import { updateUserInfoAction } from "@/src/entities/actions/user";
@@ -110,7 +110,7 @@ export default function UpdateUserField({
   return (
     <form
       className={twMerge(
-        "border-light flex flex-col items-center gap-1 border-b-[1px] bg-white px-2 md:h-[80px] md:flex-row md:px-6",
+        "flex flex-col items-center gap-1 border-b-[1px] border-light bg-white px-2 md:h-[80px] md:flex-row md:px-6",
         isLast && "border-0",
       )}
       onSubmit={handleSubmit(onSubmit)}

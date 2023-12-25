@@ -1,8 +1,8 @@
 "use client";
 
-import { Pagination, PaginationProps } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { Pagination, PaginationProps } from "@nextui-org/react";
 
 interface IProps extends PaginationProps {}
 

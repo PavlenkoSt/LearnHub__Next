@@ -1,15 +1,15 @@
 import React from "react";
-import { getServerSession } from "next-auth";
 import Image from "next/image";
-import Link from "next/link";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/next-auth.options";
 import { getImageSrc } from "@/src/shared/utilts/getImageSrc";
+import NextLink from "@/src/shared/UI/NextLink";
 
 export default async function ProfileAvatarNav() {
   const session = await getServerSession(authOptions);
 
   return (
-    <Link href="/dashboard/profile" className="header-btn overflow-hidden">
+    <NextLink href="/dashboard/profile" className="header-btn overflow-hidden">
       <Image
         src={getImageSrc(session?.user?.image) || "/Avatar.svg"}
         alt="Avatar"
@@ -22,6 +22,6 @@ export default async function ProfileAvatarNav() {
         }}
         className="rounded-full"
       />
-    </Link>
+    </NextLink>
   );
 }

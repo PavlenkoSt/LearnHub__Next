@@ -15,7 +15,7 @@ export default function Layout({ children }: IProps) {
       </div>
       <div className="flex-1 overflow-y-auto bg-secondary pb-4 md:pb-0">
         <Header />
-        <div className="px-1 sm:px-3">{children}</div>
+        <div>{children}</div>
       </div>
       <div className="visible md:hidden">
         <NavBarMobile />
