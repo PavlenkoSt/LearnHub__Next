@@ -10,6 +10,7 @@ import Btn from "@/src/shared/UI/Btn";
 import Input from "@/src/shared/UI/Input";
 import NextLink from "@/src/shared/UI/NextLink";
 import { createUserAction } from "@/src/entities/actions/user";
+import GoogleSignIn from "@/src/features/auth/GoogleSignIn";
 
 interface IForm {
   email: string;
@@ -155,6 +156,7 @@ export default function SignUp() {
           Already have an account?
         </NextLink>
       </div>
+      <GoogleSignIn />
     </form>
   );
 }

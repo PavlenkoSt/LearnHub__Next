@@ -9,6 +9,7 @@ import * as yup from "yup";
 import Btn from "@/src/shared/UI/Btn";
 import Input from "@/src/shared/UI/Input";
 import NextLink from "@/src/shared/UI/NextLink";
+import GoogleSignIn from "@/src/features/auth/GoogleSignIn";
 
 interface IForm {
   email: string;
@@ -122,6 +123,7 @@ export default function SignIn() {
           You do not have an account?
         </NextLink>
       </div>
+      <GoogleSignIn />
     </form>
   );
 }
