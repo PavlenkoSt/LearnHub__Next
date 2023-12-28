@@ -1,4 +1,5 @@
 import React from "react";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Toaster } from "react-hot-toast";
@@ -7,13 +8,23 @@ import BreadcrumbsComponent from "@/src/shared/UI/Breadcrumbs";
 import PageContainer from "@/src/shared/components/PageContainer";
 import { getArticleByIdAction } from "@/src/entities/actions/articles";
 import ArticleActions from "@/src/widgets/article/ArticleActions";
-import ArticleBody from "@/src//widgets/article/ArticleBody";
+import ArticleBody from "@/src/widgets/article/ArticleBody";
 import ArticleHead from "@/src/widgets/article/ArticleHead";
-import Comments from "@/src//widgets/comment/Comments";
+import Comments from "@/src/widgets/comment/Comments";
 
 interface IProps {
   params: {
     id: string;
+  };
+}
+
+export async function generateMetadata({ params }: IProps): Promise<Metadata> {
+  const article = isNaN(+params.id)
+    ? null
+    : await getArticleByIdAction(+params.id);
+
+  return {
+    title: article ? article.name : "Article",
   };
 }
 

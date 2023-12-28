@@ -1,6 +1,11 @@
 import React from "react";
+import { Metadata } from "next";
 import PageContainer from "@/src/shared/components/PageContainer";
 import BreadcrumbsComponent from "@/src/shared/UI/Breadcrumbs";
+
+export const metadata: Metadata = {
+  title: "Article not found",
+};
 
 export default function NotFound() {
   return (

@@ -1,4 +1,5 @@
 import React from "react";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { authOptions } from "@/next-auth.options";
@@ -11,6 +12,16 @@ import UpdateArticle from "@/src/widgets/article/UpdateArticle";
 interface IProps {
   params: {
     id: string;
+  };
+}
+
+export async function generateMetadata({ params }: IProps): Promise<Metadata> {
+  const article = isNaN(+params.id)
+    ? null
+    : await getArticleByIdAction(+params.id);
+
+  return {
+    title: article ? `Edit article "${article.name}"` : "Edit article",
   };
 }
 

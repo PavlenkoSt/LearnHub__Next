@@ -1,4 +1,5 @@
 import React from "react";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Pagination from "@/src/shared/UI/Pagination";
 import { getFilteredArticlesWithCountAction } from "@/src/entities/actions/articles";
@@ -16,6 +17,10 @@ interface IProps {
 }
 
 const pageSize = 12;
+
+export const metadata: Metadata = {
+  title: "Articles",
+};
 
 export default async function Articles({ searchParams }: IProps) {
   const page = typeof searchParams.page === "string" ? +searchParams.page : 1;

@@ -1,6 +1,11 @@
 import React from "react";
+import { Metadata } from "next";
 import PageContainer from "@/src/shared/components/PageContainer";
 import DashboardCard from "@/src/shared/components/DashboardCard";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default function Dashboard() {
   return (
