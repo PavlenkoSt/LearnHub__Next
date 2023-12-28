@@ -45,7 +45,7 @@ export default async function CommentBody({ comment, isReply }: IProps) {
             width={30}
             height={30}
             alt="avatar"
-            className="overflow-hidden rounded-full border-[2px] border-gray-400"
+            className="h-[30px] w-[30px] overflow-hidden rounded-full border-[2px] border-gray-400 object-cover"
           />
           <div className="font-medium text-secondary">{userName}</div>
         </div>
