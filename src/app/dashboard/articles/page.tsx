@@ -17,8 +17,6 @@ interface IProps {
 
 const pageSize = 12;
 
-export const dynamic = "force-dynamic";
-
 export default async function Articles({ searchParams }: IProps) {
   const page = typeof searchParams.page === "string" ? +searchParams.page : 1;
   const search = searchParams.search || "";

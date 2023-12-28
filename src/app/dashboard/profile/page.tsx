@@ -6,8 +6,6 @@ import PageContainer from "@/src/shared/components/PageContainer";
 import UserFields from "@/src/widgets/user/UserFields";
 import UserAvatar from "@/src/widgets/user/UserAvatar";
 
-export const dynamic = "force-dynamic";
-
 export default async function Profile() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
